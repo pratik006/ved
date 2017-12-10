@@ -13,9 +13,9 @@ export class AppComponent implements OnInit {
   books: Book[];
 
   ngOnInit() {
-    // this.vedService.getBooks().then(
-    //   responseData=>{console.log(responseData);
-    //     this.books = responseData; 
-    // });
+    this.vedService.getBooks().then(
+      responseData=>{console.log(responseData);
+        this.books = responseData; 
+    });
   }
 }
