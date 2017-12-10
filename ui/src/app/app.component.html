@@ -1,5 +1,5 @@
 <div style="text-align:center">
-    <mat-grid-list cols="4" rowHeight="2:1">
+    <mat-grid-list cols="4" >
         <mat-grid-tile *ngFor="let book of books">
             <mat-card class="example-card">
                 <mat-card-header>
@@ -7,7 +7,7 @@
                   <mat-card-title>{{book.name}}</mat-card-title>
                   <mat-card-subtitle></mat-card-subtitle>
                 </mat-card-header>
-                <img mat-card-image src="{{book.previewUrl}}" alt="Cover Photo">
+                <img mat-card-image src="./assets/images/{{book.previewUrl}}" alt="Cover Photo">
                 <mat-card-content>
                   <p>
                     The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
