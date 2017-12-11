@@ -8,14 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private vedService?: VedService) { }
+  constructor() { }
   title = 'Vedsangraha';
-  books: Book[];
 
-  ngOnInit() {
-    this.vedService.getBooks().then(
-      responseData=>{console.log(responseData);
-        this.books = responseData; 
-    });
-  }
+  ngOnInit() { }
 }
