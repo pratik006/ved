@@ -34,4 +34,8 @@ public class VedService {
 	public List<Book> getBooks() {
 		return bookMapper.map(bookRepo.findAll());
 	}
+
+	public Book getBookById(Long id) {
+		return bookMapper.map(bookRepo.findOne(id));
+	}
 }

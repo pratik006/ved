@@ -25,6 +25,11 @@ public class VedController {
 	public List<Book> getBooks() {
         return vedService.getBooks();
     }
+
+	@RequestMapping("/book/{id}")
+	public Book getBook(@PathVariable Long id) {
+		return vedService.getBookById(id);
+	}
 	
 	@RequestMapping("/{bookId}/{chapterNo}/{sutraNo}")
 	public Sutra getSutra(@PathVariable Long bookId,@PathVariable Integer chapterNo, @PathVariable Integer sutraNo,
