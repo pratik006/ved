@@ -31,13 +31,16 @@ public class VedController {
 		return vedService.getBookById(id);
 	}
 	
-	@RequestMapping("/{bookId}/{chapterNo}/{sutraNo}")
-	public Sutra getSutra(@PathVariable Long bookId,@PathVariable Integer chapterNo, @PathVariable Integer sutraNo,
-						  @RequestParam(required = false, defaultValue = "ro") String script) {
+	@RequestMapping("/{bookId}/{chapterNo}/sutras")
+	public List<Sutra> getSutra(@PathVariable Long bookId, @PathVariable int chapterNo,
+						  @RequestParam(required = false, defaultValue = "ro") String script,
+						  @RequestParam(required = false, defaultValue = "0") int startIndex,
+						  @RequestParam(required = false, defaultValue = "10") int size
+						  ) {
 		long start = System.currentTimeMillis();
-		Sutra sutra = vedService.getSutra(bookId, chapterNo, sutraNo, script);
+		List<Sutra> sutras = vedService.getSutras(bookId, chapterNo, script, startIndex, size);
 		long end = System.currentTimeMillis();
 		LOG.trace("Time: " + (end-start) + " miliseconds");
-		return sutra;
+		return sutras;
 	}
 }
