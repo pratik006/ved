@@ -1,6 +1,11 @@
-<p>
-  book-detail works!
-</p>
 <div *ngIf="book | async as book ">
-  {{book.name}}
+  <h1 class="sutra-header" style="text-align: center;">{{book.name}}</h1>
+    <mat-card *ngFor="let sutra of book.verses" style="background-image: url('./assets/images/background.jpg'); margin: 10px;">
+      <mat-card-header>
+        <mat-card-title>{{sutra.id}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{sutra.content}}</p>
+      </mat-card-content>
+    </mat-card>
 </div>

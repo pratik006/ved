@@ -4,7 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 
 export const router: Routes = [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+    { path: '', redirectTo: 'home', pathMatch: 'full'},
+    { path: 'home', component: HomeComponent },
     { path: 'detail/:id', component: BookDetailComponent }
 ];
 
