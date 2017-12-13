@@ -1,14 +1,7 @@
-/* @font-face {
-  font-family: 'Samarkan';
-  src: url('./assets/fonts/samarkan/SAMAN__.TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+/* @font-face kit by Fonts2u (http://www.fonts2u.com) */ 
+/* @font-face {font-family:"Samarkan Normal";src:url("samarn.eot?") format("eot"),url("samarn.woff") format("woff"),url("samarn.ttf") format("truetype"),url("samarn.svg#SamarkanNormal") format("svg");font-weight:normal;font-style:normal;} */
 
-}
 
 .sutra-header {
   font-family: "Samarkan";
-  src: url('./assets/fonts/samarkan/SAMAN__.TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-} */
+}

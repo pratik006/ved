@@ -1,8 +1,11 @@
-import { Sutra } from './sutra';
+import { Chapter } from './chapter';
 export class Book {
-  id: number;
+  _id: number;
 	name: string;
 	authorName: string;
 	previewUrl: string;
-	verses: Sutra[];
+	chapters: Chapter[];
+
+	get id(): number { return this.id; }
+	set id(theId: number) {	this._id = theId;	}
 }
