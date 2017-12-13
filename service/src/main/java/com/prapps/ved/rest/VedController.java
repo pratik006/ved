@@ -13,6 +13,7 @@ import com.prapps.ved.dto.Sutra;
 import com.prapps.ved.service.VedService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/rest")
@@ -26,19 +27,19 @@ public class VedController {
         return vedService.getBooks();
     }
 
-	@RequestMapping("/book/{id}")
+	@RequestMapping("/books/{id}")
 	public Book getBook(@PathVariable Long id) {
 		return vedService.getBookById(id);
 	}
 	
 	@RequestMapping("/{bookId}/{chapterNo}/sutras")
-	public List<Sutra> getSutra(@PathVariable Long bookId, @PathVariable int chapterNo,
+	public Set<Sutra> getSutra(@PathVariable Long bookId, @PathVariable int chapterNo,
 						  @RequestParam(required = false, defaultValue = "ro") String script,
 						  @RequestParam(required = false, defaultValue = "0") int startIndex,
 						  @RequestParam(required = false, defaultValue = "10") int size
 						  ) {
 		long start = System.currentTimeMillis();
-		List<Sutra> sutras = vedService.getSutras(bookId, chapterNo, script, startIndex, size);
+		Set<Sutra> sutras = vedService.getSutras(bookId, chapterNo, script, startIndex, size);
 		long end = System.currentTimeMillis();
 		LOG.trace("Time: " + (end-start) + " miliseconds");
 		return sutras;

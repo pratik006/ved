@@ -1,12 +1,15 @@
 package com.prapps.ved.persistence;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "book")
+@NamedEntityGraph(name = "BookEntity.detail", attributeNodes = @NamedAttributeNode("chapters"))
 public class BookEntity {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -18,7 +21,7 @@ public class BookEntity {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
 	@OrderBy("id asc")
-	private Set<SutraEntity> sutras;
+	private List<ChapterEntity> chapters;
 
 	public Long getId() {
 		return id;
@@ -48,14 +51,15 @@ public class BookEntity {
 
 	public void setPreviewUrl(String previewUrl) { this.previewUrl = previewUrl; }
 
-	public Set<SutraEntity> getVerses() {
-		if (null == sutras) {
-			sutras = new HashSet<>();
+	public List<ChapterEntity> getChapters() {
+		if (chapters == null) {
+			chapters = new ArrayList<>();
 		}
-		return sutras;
+
+		return chapters;
 	}
 
-	public void setVerses(Set<SutraEntity> verses) {
-		this.sutras = verses;
+	public void setChapters(List<ChapterEntity> chapters) {
+		this.chapters = chapters;
 	}
 }

@@ -6,9 +6,7 @@ import org.springframework.stereotype.Component;
 import com.prapps.ved.dto.Sutra;
 import com.prapps.ved.persistence.SutraEntity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class SutraMapper {
@@ -18,8 +16,8 @@ public class SutraMapper {
 		return sutra;
 	}
 
-	public List<Sutra> map(Collection<SutraEntity> entities) {
-		List<Sutra> sutras = new ArrayList<>();
+	public Set<Sutra> map(Collection<SutraEntity> entities) {
+		Set<Sutra> sutras = new HashSet<>();
 		for (SutraEntity entity : entities) {
 			sutras.add(map(entity));
 		}
