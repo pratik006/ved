@@ -35,9 +35,11 @@ export class BookDetailComponent implements OnInit {
   loadMore(): void {
     this.service.getSutras(this.selectedBook.id, this.chapter.id, this.endIndex, this.LEN)
       .then( responseData=>{ 
-        this.chapter.sutras.concat(responseData);
+        console.log(responseData);
+        this.chapter.sutras = this.chapter.sutras.concat(responseData);
         this.startIndex = this.endIndex;
         this.endIndex = this.startIndex + this.LEN;
+        console.log(this.chapter.sutras.length);
       });
   }
 }

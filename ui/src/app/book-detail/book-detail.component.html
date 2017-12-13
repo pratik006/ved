@@ -1,6 +1,6 @@
 <div *ngIf="book | async as book ">
   <h1 class="sutra-header" style="text-align: center;">{{book.name}}</h1>
-    <mat-card *ngFor="let sutra of book.chapters[0].sutras" style="background-image: url('./assets/images/background.jpg'); margin: 10px;">
+    <mat-card *ngFor="let sutra of chapter.sutras" style="background-image: url('./assets/images/background.jpg'); margin: 10px;">
       <mat-card-header>
         <mat-card-title>{{sutra.sutraNo}}</mat-card-title>
       </mat-card-header>
