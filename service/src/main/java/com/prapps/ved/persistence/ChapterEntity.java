@@ -6,7 +6,9 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,6 +18,8 @@ public class ChapterEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    @Column(name="book_id", insertable = false, updatable = false)
+    private Long bookId;
     @ManyToOne
     @JoinColumn(name = "book_id")
     private BookEntity book;
@@ -25,13 +29,16 @@ public class ChapterEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "chapter", fetch = FetchType.LAZY)
     @OrderBy("id asc")
-    private Set<SutraEntity> sutras;
+    private List<SutraEntity> sutras;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public Long getBookId() { return bookId; }
+    public void setBookId(Long bookId) { this.bookId = bookId; }
 
     public BookEntity getBook() { return book; }
     public void setBook(BookEntity book) { this.book = book; }
@@ -45,13 +52,13 @@ public class ChapterEntity {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
-    public Set<SutraEntity> getVerses() {
+    public List<SutraEntity> getSutras() {
         if (null == sutras) {
-            sutras = new HashSet<>();
+            sutras = new ArrayList<>();
         }
         return sutras;
     }
-    public void setVerses(Set<SutraEntity> verses) {
+    public void setSutras(List<SutraEntity> verses) {
         this.sutras = verses;
     }
 }

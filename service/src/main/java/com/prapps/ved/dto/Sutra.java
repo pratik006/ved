@@ -6,7 +6,7 @@ public class Sutra {
 	private Long id;
 	private Integer chapterNo;
 	private String chapterName;
-	private Integer verseNo;
+	private Integer sutraNo;
 	private String content;
 	
 	private List<Commentary> commentaries;
@@ -35,12 +35,12 @@ public class Sutra {
 		this.chapterName = chapterName;
 	}
 
-	public Integer getVerseNo() {
-		return verseNo;
+	public Integer getSutraNo() {
+		return sutraNo;
 	}
 
-	public void setVerseNo(Integer verseNo) {
-		this.verseNo = verseNo;
+	public void setSutraNo(Integer sutraNo) {
+		this.sutraNo = sutraNo;
 	}
 
 	public String getContent() {

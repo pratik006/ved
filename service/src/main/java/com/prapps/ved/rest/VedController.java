@@ -33,13 +33,13 @@ public class VedController {
 	}
 	
 	@RequestMapping("/{bookId}/{chapterNo}/sutras")
-	public Set<Sutra> getSutra(@PathVariable Long bookId, @PathVariable int chapterNo,
+	public List<Sutra> getSutra(@PathVariable Long bookId, @PathVariable int chapterNo,
 						  @RequestParam(required = false, defaultValue = "ro") String script,
 						  @RequestParam(required = false, defaultValue = "0") int startIndex,
 						  @RequestParam(required = false, defaultValue = "10") int size
 						  ) {
 		long start = System.currentTimeMillis();
-		Set<Sutra> sutras = vedService.getSutras(bookId, chapterNo, script, startIndex, size);
+		List<Sutra> sutras = vedService.getSutras(bookId, chapterNo, script, startIndex, size);
 		long end = System.currentTimeMillis();
 		LOG.trace("Time: " + (end-start) + " miliseconds");
 		return sutras;

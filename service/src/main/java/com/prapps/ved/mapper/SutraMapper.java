@@ -16,8 +16,8 @@ public class SutraMapper {
 		return sutra;
 	}
 
-	public Set<Sutra> map(Collection<SutraEntity> entities) {
-		Set<Sutra> sutras = new HashSet<>();
+	public List<Sutra> map(Collection<SutraEntity> entities) {
+		List<Sutra> sutras = new ArrayList<>();
 		for (SutraEntity entity : entities) {
 			sutras.add(map(entity));
 		}
