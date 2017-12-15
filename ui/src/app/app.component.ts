@@ -10,14 +10,21 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
-  ngOnInit() { }
+  books: Book[];                   
+  ngOnInit() { 
+    this.vedService.getBooks().then(
+      responseData=>{
+        this.books = responseData; 
+    });
+  }
 
   mobileQuery: MediaQueryList;  
   fillerNav = Array(10).fill(0).map((_, i) => `Nav Item ${i + 1}`);
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(private vedService: VedService,
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

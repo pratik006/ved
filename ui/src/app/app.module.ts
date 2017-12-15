@@ -43,6 +43,7 @@ import {
   MatTooltipModule,
   MatStepperModule,
 } from '@angular/material';
+import { SideNavComponent } from './side-nav/side-nav.component';
 
 
 
@@ -51,7 +52,8 @@ import {
   declarations: [
     AppComponent,
     BookDetailComponent,
-    HomeComponent
+    HomeComponent,
+    SideNavComponent
   ],
   imports: [
     BrowserModule, HttpModule, 
