@@ -27,9 +27,9 @@ public class VedController {
         return vedService.getBooks();
     }
 
-	@RequestMapping("/books/{id}")
-	public Book getBook(@PathVariable Long id) {
-		return vedService.getBookById(id);
+	@RequestMapping("/book/{id}/{chapterId}")
+	public Book getBook(@PathVariable Long id, @PathVariable Integer chapterId, @RequestParam(required = false, defaultValue = "ro") String script) {
+		return vedService.getBookById(id, chapterId, script);
 	}
 	
 	@RequestMapping("/{bookId}/{chapterNo}/sutras")

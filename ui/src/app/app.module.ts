@@ -41,7 +41,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatStepperModule,
+  MatStepperModule
 } from '@angular/material';
 import { SideNavComponent } from './side-nav/side-nav.component';
 

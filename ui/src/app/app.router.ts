@@ -6,7 +6,8 @@ import { ModuleWithProviders } from '@angular/core';
 export const router: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full'},
     { path: 'home', component: HomeComponent },
-    { path: 'detail/:id', component: BookDetailComponent }
+    { path: 'detail/:id', component: BookDetailComponent },
+    { path: 'detail/:id/:chapterId', component: BookDetailComponent }
 ];
 
 export const routes: ModuleWithProviders = RouterModule.forRoot(router);

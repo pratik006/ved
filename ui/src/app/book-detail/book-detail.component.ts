@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Book } from './../book';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Params } from '@angular/router/src/shared';
 
 @Component({
   selector: 'app-book-detail',
@@ -12,34 +13,28 @@ import { Observable } from 'rxjs/Observable';
 })
 export class BookDetailComponent implements OnInit {
   private  LEN: number = 10;
-  book: Observable<Book>;
-  selectedBook: Book;
-  chapter: Chapter;
+  book: Book;
   startIndex: number = 0;
   endIndex: number = this.startIndex + this.LEN;
+  chapterNo: number = 0;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private service: VedService) { }
+    private vedService: VedService) { }
 
   ngOnInit() {
-    this.book = this.route.paramMap
-    .switchMap((params: ParamMap) =>
-      this.service.getBook(params.get('id')));
-    this.book.subscribe(book => {
-      this.selectedBook = book;
-      this.chapter = book.chapters? book.chapters[0] : null;
+    this.vedService.selectedBook.subscribe(
+      book => this.book = book,
+      book => console.log(book)
+    );
+    this.route.paramMap.subscribe((params: Params) => {
+      this.chapterNo = params.get('chapterId')?params.get('chapterId'):this.chapterNo;
+      this.vedService.getBook(params.get('id'), this.chapterNo);
     });
+    
   }
 
   loadMore(): void {
-    this.service.getSutras(this.selectedBook.id, this.chapter.id, this.endIndex, this.LEN)
-      .then( responseData=>{ 
-        console.log(responseData);
-        this.chapter.sutras = this.chapter.sutras.concat(responseData);
-        this.startIndex = this.endIndex;
-        this.endIndex = this.startIndex + this.LEN;
-        console.log(this.chapter.sutras.length);
-      });
+    this.vedService.getSutras(this.book.id, this.chapterNo, this.endIndex, this.LEN);
   }
 }

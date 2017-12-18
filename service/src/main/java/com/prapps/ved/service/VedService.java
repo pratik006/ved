@@ -2,6 +2,7 @@ package com.prapps.ved.service;
 
 import com.prapps.ved.dto.Book;
 import com.prapps.ved.mapper.BookMapper;
+import com.prapps.ved.persistence.BookEntity;
 import com.prapps.ved.persistence.ChapterEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -16,6 +17,7 @@ import com.prapps.ved.persistence.repo.BookRepo;
 import com.prapps.ved.persistence.repo.SutraRepo;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service @Transactional(readOnly = true)
@@ -53,9 +55,14 @@ public class VedService {
 		return bookMapper.map(bookRepo.findAll());
 	}
 
-	public Book getBookById(Long id) {
-		Book book = bookMapper.map(bookRepo.findOne(id), Boolean.TRUE);
-		book.getChapters().get(0).setSutras( getSutras(book.getId(), 1, "ro", 0, 10) );
+	public Book getBookById(Long id, Integer chapterId, String script) {
+		BookEntity example = new BookEntity();
+		example.setId(id);
+		ChapterEntity chapter = new ChapterEntity();
+		chapter.setId(chapterId);
+		example.setChapters(Collections.singletonList(chapter));
+		Book book = bookMapper.map(bookRepo.findOne(Example.of(example)), Boolean.TRUE);
+		book.getChapters().get(chapterId).setSutras( getSutras(book.getId(), chapterId, script, 0, 10) );
 		return book;
 	}
 }

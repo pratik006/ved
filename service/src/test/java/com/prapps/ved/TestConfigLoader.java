@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 @ActiveProfiles("local")
 public class TestConfigLoader {
     @Autowired VedService service;
+    private static final String DEFAULT_SCRIPT = "ro";
 
     @Test public void testLoadConfiguration() { }
 
@@ -24,7 +25,7 @@ public class TestConfigLoader {
     }
 
     @Test public void testGetBookById() {
-        assertTrue(!service.getBookById(1L).getChapters().isEmpty());
+        assertTrue(!service.getBookById(1L, 1, DEFAULT_SCRIPT).getChapters().isEmpty());
     }
 
     @Test public void testGetSutras() {

@@ -2,6 +2,7 @@ import { VedService } from './vedservice';
 import { Book } from './book';
 import {MediaMatcher} from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
-  books: Book[];                   
+
   ngOnInit() { 
-    this.vedService.getBooks().then(
-      responseData=>{
-        this.books = responseData; 
-    });
+    this.vedService.getBooks();
   }
 
   mobileQuery: MediaQueryList;  
