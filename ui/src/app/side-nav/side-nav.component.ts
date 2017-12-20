@@ -24,11 +24,18 @@ export class SideNavComponent implements OnInit {
       },
       error => console.log(error)
     );
-    this.vedService.chapterNo.subscribe(chapterNo => this.selectedChapterNo = chapterNo);
+    this.vedService.chapterNo.subscribe(chapterNo => {
+      this.selectedChapterNo = chapterNo;
+      this.chapterExpand = true;
+    });
    }
 
    toggleChapter(): void {
     this.chapterExpand = !this.chapterExpand;
+   }
+
+   setExpandChapter() {
+     this.chapterExpand = true;
    }
 
 }
