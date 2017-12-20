@@ -62,7 +62,8 @@ public class VedService {
 		chapter.setId(chapterId);
 		example.setChapters(Collections.singletonList(chapter));
 		Book book = bookMapper.map(bookRepo.findOne(Example.of(example)), Boolean.TRUE);
-		book.getChapters().get(chapterId).setSutras( getSutras(book.getId(), chapterId, script, 0, 10) );
+		List<Sutra> sutras = getSutras(book.getId(), chapter.getId(), script, 0, 10);
+		book.getChapters().get(chapter.getId() - 1).setSutras( sutras );
 		return book;
 	}
 }

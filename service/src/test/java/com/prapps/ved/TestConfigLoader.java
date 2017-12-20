@@ -1,5 +1,7 @@
 package com.prapps.ved;
 
+import com.prapps.ved.dto.Book;
+import com.prapps.ved.dto.Chapter;
 import com.prapps.ved.service.VedService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +27,12 @@ public class TestConfigLoader {
     }
 
     @Test public void testGetBookById() {
-        assertTrue(!service.getBookById(1L, 1, DEFAULT_SCRIPT).getChapters().isEmpty());
+        int chapterNo = 1;
+        Book book = service.getBookById(1l, chapterNo, DEFAULT_SCRIPT);
+        assertTrue(!book.getChapters().isEmpty());
+        Chapter chapter = book.getChapters().get(chapterNo - 1);
+        assertEquals("ARJUN-VISHAD", chapter.getName());
+        assertTrue(!chapter.getSutras().isEmpty());
     }
 
     @Test public void testGetSutras() {
