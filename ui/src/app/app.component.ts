@@ -12,6 +12,7 @@ import { MatSidenav } from '@angular/material';
 })
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
+  subtitle = '';
   @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
@@ -34,6 +35,11 @@ export class AppComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.vedService.selectedBook.subscribe(
+      book => this.subtitle = book.name,
+      error => console.log(error)
+    );
   }
 
   ngOnDestroy(): void {
