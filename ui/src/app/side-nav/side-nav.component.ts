@@ -9,11 +9,14 @@ import { VedService } from '../vedservice';
 })
 export class SideNavComponent implements OnInit {
   books: Book[];
+  selectedChapterNo: number;
   constructor(private vedService: VedService) { }
   ngOnInit() {
-    this.vedService.currentMessage.subscribe(books => this.books = books);
+    this.vedService.books.subscribe(books => this.books = books);
     this.vedService.selectedBook.subscribe(
-      book => this.books[this.books.findIndex(item => item.id == book.id)] = book,
+      book => {
+        this.books[this.books.findIndex(item => item.id == book.id)] = book;      
+      },
       error => console.log(error)
     );
    }

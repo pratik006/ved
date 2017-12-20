@@ -1,4 +1,4 @@
-import { ParamMap } from '@angular/router';
+import { ParamMap, Router } from '@angular/router';
 import { Sutra } from './sutra';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AsyncSubject } from 'rxjs/AsyncSubject';
@@ -13,8 +13,8 @@ import 'rxjs/Rx';
 export class VedService {
   baseUrl = "http://localhost:8080/rest";
   options: RequestOptions = new RequestOptions();
-  private messageSource = new BehaviorSubject<Book[]>([]);
-  currentMessage = this.messageSource.asObservable();
+  private booksSource = new BehaviorSubject<Book[]>([]);
+  books = this.booksSource.asObservable();
 
   private selectedBookSource = new BehaviorSubject<Book>(new Book());
   selectedBook = this.selectedBookSource.asObservable();
@@ -28,7 +28,7 @@ export class VedService {
     this.http.get(this.baseUrl + "/books")
       .map(response => response.json() as Book[])
       .subscribe(
-        msg => this.messageSource.next(msg),
+        msg => this.booksSource.next(msg),
         msg => console.log("error in /books "+msg)
       );
   }

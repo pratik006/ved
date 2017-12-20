@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private vedService: VedService) { }
 
   ngOnInit() {
-    this.vedService.currentMessage.subscribe(books => this.books = books);
+    this.vedService.books.subscribe(books => this.books = books);
   }
 
 }
