@@ -1,8 +1,9 @@
 import { VedService } from './vedservice';
 import { Book } from './book';
 import {MediaMatcher} from '@angular/cdk/layout';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,16 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
+  @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
     this.vedService.getBooks();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.snav.open();
+    }, 250);
   }
 
   mobileQuery: MediaQueryList;  
