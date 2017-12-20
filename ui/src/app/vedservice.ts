@@ -19,6 +19,9 @@ export class VedService {
   private selectedBookSource = new BehaviorSubject<Book>(new Book());
   selectedBook = this.selectedBookSource.asObservable();
 
+  private chapterNoSource = new BehaviorSubject<number>(1);
+  chapterNo = this.chapterNoSource.asObservable();
+
   constructor(private http: Http) {
     this.options.headers = new Headers();
     this.options.headers.append("Access-Control-Allow-Origin", "*");
@@ -38,7 +41,8 @@ export class VedService {
     return Promise.reject(error.message || error);
   }
 
-  getBook(id: number | string, chapter: number | string): void {
+  getBook(id: number | string, chapter: number): void {
+    this.chapterNoSource.next(chapter);
     this.http.get(this.baseUrl + "/book/"+id+"/"+chapter).map(response => response.json() as Book)
     .subscribe(
       book => this.selectedBookSource.next(book),
