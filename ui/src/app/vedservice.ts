@@ -5,7 +5,7 @@ import { AsyncSubject } from 'rxjs/AsyncSubject';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { Book } from './book';
-import { Http, RequestOptions, URLSearchParams, Headers } from '@angular/http';
+import { Http, RequestOptions, URLSearchParams, Headers, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 
@@ -18,6 +18,8 @@ export class VedService {
 
   private selectedBookSource = new BehaviorSubject<Book>(new Book());
   selectedBook = this.selectedBookSource.asObservable();
+
+  private book: Book;
 
   constructor(private http: Http) {
     this.options.headers = new Headers();
@@ -40,18 +42,22 @@ export class VedService {
 
   getBook(id: number | string, chapter: number | string): void {
     this.http.get(this.baseUrl + "/book/"+id+"/"+chapter).map(response => response.json() as Book)
-    .subscribe(
-      book => this.selectedBookSource.next(book),
-      msg => console.log("error in /book/ "+id+" "+msg)
+    .subscribe(book => {
+        this.book = book; 
+        this.selectedBookSource.next(book);
+      }
     );
   }
 
   getSutras(bookId: number, chapterNo: number, startIndex: number, len: number): void {
-    console.log("startIndex: "+startIndex+"\len: "+len);
+    console.log("chapter: "+chapterNo+"\tstartIndex: "+startIndex+"\len: "+len);
     const options: RequestOptions = new RequestOptions();
     options.params = new URLSearchParams();
     options.params.append("startIndex", ""+startIndex);
     options.params.append("size", ""+len);
-    this.http.get(this.baseUrl + "/"+bookId+"/"+chapterNo+"/sutras", options);
+    this.http.get(this.baseUrl + "/"+bookId+"/"+chapterNo+"/sutras", options).subscribe(response => {
+      this.book.chapters[chapterNo-1].sutras = this.book.chapters[chapterNo-1].sutras.concat(response.json());
+      this.selectedBookSource.next(this.book);
+    });
   }
 }

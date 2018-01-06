@@ -6,7 +6,7 @@
       <ul style="list-style: none;">
       <li *ngFor="let chapter of book.chapters">
         <a mat-list-item [routerLink]="['/detail', book.id, chapter.id]">
-          {{chapter.name}}
+          {{toTitleCase(chapter.name)}}
         </a>
       </li>
     </ul>    

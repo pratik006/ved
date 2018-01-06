@@ -16,6 +16,10 @@ export class SideNavComponent implements OnInit {
       book => this.books[this.books.findIndex(item => item.id == book.id)] = book,
       error => console.log(error)
     );
-   }
+  }
+
+  toTitleCase(str: string): string {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
 
 }

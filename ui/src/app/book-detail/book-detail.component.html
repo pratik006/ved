@@ -1,15 +1,17 @@
-<div *ngIf="book">
+<div class="flex-container column-wise" *ngIf="book">
   <h1 class="sutra-header" style="text-align: center;">{{book.name}}</h1>
-    <div *ngIf="book && book.chapters" >
-      <mat-card *ngFor="let sutra of book.chapters[chapterNo].sutras" style="background-image: url('./assets/images/background.jpg'); margin: 10px;">
-        <mat-card-header>
-          <mat-card-title>{{sutra.sutraNo}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p [innerHTML]="sutra.content"></p>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    
+  <div *ngIf="book && book.chapters" >
+    <mat-card *ngFor="let sutra of book.chapters[chapterNo-1].sutras" style="background-image: url('./assets/images/background.jpg'); margin: 10px;">
+      <mat-card-header>
+        <mat-card-title>{{sutra.sutraNo}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p [innerHTML]="sutra.content"></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="bottom-navigation">
+    <button mat-raised-button color="primary" (click)="prev()">Prev</button>
+    <button mat-raised-button color="primary" (click)="next()">Next</button>
+  </div>
 </div>
-<button (click)="loadMore()">Load more</button>

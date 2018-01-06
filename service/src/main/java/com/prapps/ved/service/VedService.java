@@ -38,17 +38,8 @@ public class VedService {
 	}
 
 	public List<Sutra> getSutras(Long bookId, int chapterNo, String script, int startIndex, int size) {
-		SutraEntity entity = new SutraEntity();
-		//entity.setBook(bookRepo.findOne(bookId));
-		entity.setLangCode(script);
-		ChapterEntity chapter = new ChapterEntity();
-		chapter.setId(chapterNo);
-		entity.setChapter(chapter);
-		Example<SutraEntity> example = Example.of(entity);
-		final PageRequest page = new PageRequest(
-				startIndex, size, Sort.Direction.ASC, "sutraNo"
-		);
-		return sutraMapper.map(sutraRepo.findBySutraNoBetween(bookId, chapterNo, "ro", startIndex, startIndex + size));
+		return sutraMapper.map(
+				sutraRepo.findBySutraNoBetween(bookId, chapterNo, "ro", startIndex, startIndex + size - 1));
 	}
 
 	public List<Book> getBooks() {
@@ -62,7 +53,7 @@ public class VedService {
 		chapter.setId(chapterId);
 		example.setChapters(Collections.singletonList(chapter));
 		Book book = bookMapper.map(bookRepo.findOne(Example.of(example)), Boolean.TRUE);
-		book.getChapters().get(chapterId).setSutras( getSutras(book.getId(), chapterId, script, 0, 10) );
+		book.getChapters().get(chapterId-1).setSutras( getSutras(book.getId(), chapterId, script, 1, 10) );
 		return book;
 	}
 }

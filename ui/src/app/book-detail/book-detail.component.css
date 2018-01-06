@@ -5,3 +5,16 @@
 .sutra-header {
   font-family: "Samarkan";
 }
+
+.flex-container {
+  display: flex;
+}
+.column-wise {
+  flex-direction: column;
+}
+.bottom-navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+}
