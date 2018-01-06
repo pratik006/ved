@@ -9,17 +9,37 @@ import { VedService } from '../vedservice';
 })
 export class SideNavComponent implements OnInit {
   books: Book[];
+  selectedBook: Book;
+  selectedChapterNo: number;
+
+  chapterExpand: boolean = true;
+
   constructor(private vedService: VedService) { }
   ngOnInit() {
-    this.vedService.currentMessage.subscribe(books => this.books = books);
+    this.vedService.books.subscribe(books => this.books = books);
     this.vedService.selectedBook.subscribe(
-      book => this.books[this.books.findIndex(item => item.id == book.id)] = book,
+      book => {
+        this.selectedBook = book;
+        this.books[this.books.findIndex(item => item.id == book.id)] = book;      
+      },
       error => console.log(error)
     );
-  }
+    this.vedService.chapterNo.subscribe(chapterNo => {
+      this.selectedChapterNo = chapterNo;
+      this.chapterExpand = true;
+    });
+   }
 
-  toTitleCase(str: string): string {
-    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-  }
+   toggleChapter(): void {
+    this.chapterExpand = !this.chapterExpand;
+   }
+
+   setExpandChapter() {
+     this.chapterExpand = true;
+   }
+
+   toTitleCase(str: string): string {
+     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+   }
 
 }

@@ -1,12 +1,15 @@
 <mat-nav-list>
-  <div *ngFor="let book of books">
+  <div *ngFor="let book of books" color="primary">
     <a mat-list-item [routerLink]="['/detail', book.id]">
+      <button mat-button (click)="toggleChapter()" [ngClass]="book.id == selectedBook.id ? 'mat-primary selected':''">
         {{book.name}}
+        <i class="material-icons">{{book.id == selectedBook.id && chapterExpand ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</i>
+      </button>
     </a>
-      <ul style="list-style: none;">
+    <ul *ngIf="chapterExpand" style="list-style: none;">
       <li *ngFor="let chapter of book.chapters">
         <a mat-list-item [routerLink]="['/detail', book.id, chapter.id]">
-          {{toTitleCase(chapter.name)}}
+          {{chapter.id}}. {{toTitleCase(chapter.name)}}
         </a>
       </li>
     </ul>    

@@ -1,4 +1,4 @@
-import { ParamMap } from '@angular/router';
+import { ParamMap, Router } from '@angular/router';
 import { Sutra } from './sutra';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AsyncSubject } from 'rxjs/AsyncSubject';
@@ -13,13 +13,15 @@ import 'rxjs/Rx';
 export class VedService {
   baseUrl = "http://localhost:8080/rest";
   options: RequestOptions = new RequestOptions();
-  private messageSource = new BehaviorSubject<Book[]>([]);
-  currentMessage = this.messageSource.asObservable();
+  private booksSource = new BehaviorSubject<Book[]>([]);
+  books = this.booksSource.asObservable();
 
   private selectedBookSource = new BehaviorSubject<Book>(new Book());
   selectedBook = this.selectedBookSource.asObservable();
 
   private book: Book;
+  private chapterNoSource = new BehaviorSubject<number>(1);
+  chapterNo = this.chapterNoSource.asObservable();
 
   constructor(private http: Http) {
     this.options.headers = new Headers();
@@ -30,7 +32,7 @@ export class VedService {
     this.http.get(this.baseUrl + "/books")
       .map(response => response.json() as Book[])
       .subscribe(
-        msg => this.messageSource.next(msg),
+        msg => this.booksSource.next(msg),
         msg => console.log("error in /books "+msg)
       );
   }
@@ -40,7 +42,8 @@ export class VedService {
     return Promise.reject(error.message || error);
   }
 
-  getBook(id: number | string, chapter: number | string): void {
+  getBook(id: number | string, chapter: number): void {
+    this.chapterNoSource.next(chapter);
     this.http.get(this.baseUrl + "/book/"+id+"/"+chapter).map(response => response.json() as Book)
     .subscribe(book => {
         this.book = book; 

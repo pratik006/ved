@@ -1,8 +1,9 @@
 import { VedService } from './vedservice';
 import { Book } from './book';
 import {MediaMatcher} from '@angular/cdk/layout';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,17 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
+  subtitle = '';
+  @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
     this.vedService.getBooks();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.snav.open();
+    }, 250);
   }
 
   mobileQuery: MediaQueryList;  
@@ -26,6 +35,11 @@ export class AppComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.vedService.selectedBook.subscribe(
+      book => this.subtitle = book.name,
+      error => console.log(error)
+    );
   }
 
   ngOnDestroy(): void {
