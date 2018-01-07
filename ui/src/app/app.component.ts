@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
   subtitle = '';
   selectedBook: Book;
+  selectedLang: string = "ro";
   @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
@@ -51,6 +52,10 @@ export class AppComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  selectLang(lang: string): void {
+    this.selectedLang = lang;
   }
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));

@@ -10,8 +10,10 @@
           <button mat-menu-item>Item 2</button>
         </mat-menu>
 
-        <mat-menu #language="matMenu">
-            <button mat-menu-item *ngFor="let lang of selectedBook.availableLanguages">{{lang}}</button>
+        <mat-menu #language="matMenu">            
+          <button (click)="selectLang(lang)" mat-menu-item *ngFor="let lang of selectedBook.availableLanguages">
+            <i class="material-icons" *ngIf="selectedLang==lang">done</i>{{lang}}
+          </button>
         </mat-menu>
       </div>
     </div>
