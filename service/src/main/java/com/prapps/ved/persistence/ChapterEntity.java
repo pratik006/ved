@@ -1,27 +1,18 @@
 package com.prapps.ved.persistence;
 
-import com.prapps.ved.persistence.BookEntity;
-import com.prapps.ved.persistence.SutraEntity;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "chapter")
 @NamedEntityGraph(name = "ChapterEntity.detail", attributeNodes = @NamedAttributeNode("sutras"))
 public class ChapterEntity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @EmbeddedId
+    private ChapterIdEntity id;
     private String name;
-    @Column(name="book_id", insertable = false, updatable = false)
-    private Long bookId;
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", updatable = false, insertable = false)
     private BookEntity book;
     private String langCode;
     private String headline;
@@ -31,14 +22,11 @@ public class ChapterEntity {
     @OrderBy("id asc")
     private List<SutraEntity> sutras;
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public ChapterIdEntity getId() { return id; }
+    public void setId(ChapterIdEntity chapterId) { this.id = chapterId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public Long getBookId() { return bookId; }
-    public void setBookId(Long bookId) { this.bookId = bookId; }
 
     public BookEntity getBook() { return book; }
     public void setBook(BookEntity book) { this.book = book; }

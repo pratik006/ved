@@ -20,7 +20,7 @@ public class BookEntity {
 	private String previewUrl;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
-	@OrderBy("id asc")
+	@OrderBy("chapter_no asc")
 	private List<ChapterEntity> chapters;
 
 	public Long getId() {

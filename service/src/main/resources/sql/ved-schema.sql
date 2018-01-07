@@ -43,13 +43,13 @@ DROP TABLE IF EXISTS `chapter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `chapter` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `chapter_no` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `book_id` int(11) DEFAULT NULL,
   `lang_code` varchar(45) DEFAULT NULL,
   `headline` varchar(255) DEFAULT NULL,
   `content` varchar(4000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`chapter_no`, `book_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,14 +62,15 @@ DROP TABLE IF EXISTS `sutra`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sutra` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `chapter_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `chapter_no` int(11) NOT NULL,
   `content` longtext NOT NULL,
   `lang_code` varchar(255) NOT NULL,
   `language` varchar(255) NOT NULL,
   `sutra_no` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_sutra_chapter_idx` (`chapter_id`),
-  CONSTRAINT `fk_sutra_chapter` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_sutra_chapter` FOREIGN KEY (`chapter_id`) REFERENCES `chapter` (`chapter_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7712 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

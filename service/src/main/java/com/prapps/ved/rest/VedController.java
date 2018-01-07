@@ -33,13 +33,17 @@ public class VedController {
 
 	@RequestMapping("/book/{id}/{chapterId}")
 	public Book getBook(@PathVariable Long id, @PathVariable Integer chapterId,
-						@RequestParam(required = false, defaultValue = "ro") String script) {
-		return vedService.getBookById(id, chapterId, script);
+						@RequestParam(required = false, defaultValue = "ro") String script,
+						@RequestParam(required = false, defaultValue = "1") int startIndex,
+						@RequestParam(required = false, defaultValue = "10") int size) {
+		return vedService.getBookById(id, chapterId, script, startIndex, size);
 	}
 
 	@RequestMapping("/book/{id}")
-	public Book getBook(@PathVariable Long id, @RequestParam(required = false, defaultValue = "ro") String script) {
-		return vedService.getBookById(id, 1, script);
+	public Book getBook(@PathVariable Long id, @RequestParam(required = false, defaultValue = "ro") String script,
+						@RequestParam(required = false, defaultValue = "1") int startIndex,
+						@RequestParam(required = false, defaultValue = "10") int size) {
+		return vedService.getBookById(id, 1, script, startIndex, size);
 	}
 	
 	@RequestMapping("/{bookId}/{chapterNo}/sutras")

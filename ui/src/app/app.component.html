@@ -11,9 +11,8 @@
         </mat-menu>
 
         <mat-menu #language="matMenu">
-            <button mat-menu-item>Birds</button>
-            <button mat-menu-item>Mammals</button>
-          </mat-menu>
+            <button mat-menu-item *ngFor="let lang of selectedBook.availableLanguages">{{lang}}</button>
+        </mat-menu>
       </div>
     </div>
   </mat-toolbar>

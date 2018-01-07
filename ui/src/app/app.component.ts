@@ -13,10 +13,17 @@ import { MatSidenav } from '@angular/material';
 export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
   subtitle = '';
+  selectedBook: Book;
   @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
     this.vedService.getBooks();
+    this.vedService.selectedBook.subscribe(
+      book => {
+        this.selectedBook = book;
+      },
+      error => console.log(error)
+    );
   }
 
   ngAfterViewInit(): void {

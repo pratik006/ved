@@ -1,13 +1,15 @@
 package com.prapps.ved.service;
 
 import com.prapps.ved.dto.Book;
+import com.prapps.ved.dto.Chapter;
 import com.prapps.ved.mapper.BookMapper;
+import com.prapps.ved.mapper.ChapterMapper;
 import com.prapps.ved.persistence.BookEntity;
 import com.prapps.ved.persistence.ChapterEntity;
+import com.prapps.ved.persistence.ChapterIdEntity;
+import com.prapps.ved.persistence.repo.ChapterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.prapps.ved.dto.Sutra;
@@ -24,8 +26,10 @@ import java.util.List;
 public class VedService {
 	@Autowired private SutraRepo sutraRepo;
 	@Autowired private BookRepo bookRepo;
+	@Autowired private ChapterRepo chapterRepo;
 	@Autowired SutraMapper sutraMapper;
 	@Autowired BookMapper bookMapper;
+	@Autowired ChapterMapper chapterMapper;
 
 	public Sutra getSutra(Long bookId, Integer chapterNo, Integer sutraNo, String script) {
 		SutraEntity entity = new SutraEntity();
@@ -46,14 +50,25 @@ public class VedService {
 		return bookMapper.map(bookRepo.findAll());
 	}
 
-	public Book getBookById(Long id, Integer chapterId, String script) {
+	public Book getBookById(Long id, Integer chapterNo, String script, int startIndex, int size) {
 		BookEntity example = new BookEntity();
 		example.setId(id);
 		ChapterEntity chapter = new ChapterEntity();
-		chapter.setId(chapterId);
+		ChapterIdEntity chapterIdEntity = new ChapterIdEntity(id, chapterNo);
+		chapter.setId(chapterIdEntity);
 		example.setChapters(Collections.singletonList(chapter));
 		Book book = bookMapper.map(bookRepo.findOne(Example.of(example)), Boolean.TRUE);
-		book.getChapters().get(chapterId-1).setSutras( getSutras(book.getId(), chapterId, script, 1, 10) );
+		book.getChapters().get(chapterNo-1).setSutras( getSutras(book.getId(), chapterNo, script, startIndex, size) );
+		book.setAvailableLanguages(getAvailableLanguages(id));
 		return book;
+	}
+
+	public List<String> getAvailableLanguages(Long bookId) {
+		return sutraRepo.getAvailableScripts(bookId);
+	}
+
+	public Chapter getChapter(Long bookId, Integer chapterNo) {
+		ChapterIdEntity id = new ChapterIdEntity(bookId, chapterNo);
+		return chapterMapper.map(chapterRepo.findOne(id));
 	}
 }

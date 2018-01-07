@@ -4,16 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "sutra")
@@ -22,6 +13,10 @@ public class SutraEntity {
 	private Long id;
 	@Column(nullable = false)
 	private Integer sutraNo;
+	@Column(insertable = false, updatable = false)
+	private Integer chapterNo;
+	@Column(insertable = false, updatable = false)
+	private Long bookId;
 	@Column(length = 10000, nullable = false)
 	private String content;
 	@Column(nullable = false)
@@ -30,7 +25,10 @@ public class SutraEntity {
 	private String language;
 
 	@ManyToOne
-	@JoinColumn(name = "chapter_id")
+	@JoinColumns({
+		@JoinColumn(name = "bookId"),
+		@JoinColumn(name = "chapterNo")
+	})
 	private ChapterEntity chapter;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sutra")
@@ -47,6 +45,12 @@ public class SutraEntity {
 	public void setSutraNo(Integer sutraNo) {
 		this.sutraNo = sutraNo;
 	}
+
+	public Long getBookId() { return bookId; }
+	public void setBookId(Long bookId) { this.bookId = bookId; }
+
+	public Integer getChapterNo() { return chapterNo; }
+	public void setChapterNo(Integer chapterNo) { this.chapterNo = chapterNo; }
 
 	public String getContent() {
 		return content;

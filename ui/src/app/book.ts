@@ -5,6 +5,7 @@ export class Book {
 	authorName: string;
 	previewUrl: string;
 	chapters: Chapter[];
+	availableLanguages: string[];
 
 	get id(): number { return this._id; }
 	set id(theId: number) {	this._id = theId;	}

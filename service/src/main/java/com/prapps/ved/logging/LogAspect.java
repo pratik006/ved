@@ -49,6 +49,7 @@ public class LogAspect {
             //log(joinPoint, duration, requests, response);
         } catch (Throwable e) {
             LOG.error("Error while audit logging: " + e.getMessage());
+            e.printStackTrace();
         }
         return object;
     }

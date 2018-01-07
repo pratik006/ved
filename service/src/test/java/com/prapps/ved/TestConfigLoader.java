@@ -10,12 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ApplicationStarter.class})
-@ActiveProfiles("local")
+//@ActiveProfiles("local")
 public class TestConfigLoader {
     @Autowired VedService service;
     private static final String DEFAULT_SCRIPT = "ro";
@@ -28,14 +30,26 @@ public class TestConfigLoader {
 
     @Test public void testGetBookById() {
         int chapterNo = 1;
-        Book book = service.getBookById(1l, chapterNo, DEFAULT_SCRIPT);
+        Book book = service.getBookById(1l, chapterNo, DEFAULT_SCRIPT, 1, 10);
         assertTrue(!book.getChapters().isEmpty());
         Chapter chapter = book.getChapters().get(chapterNo - 1);
         assertEquals("ARJUN-VISHAD", chapter.getName());
         assertTrue(!chapter.getSutras().isEmpty());
+        assertTrue(!book.getAvailableLanguages().isEmpty());
     }
 
     @Test public void testGetSutras() {
-        assertEquals(10, service.getSutras(1L, 1, "ro", 0, 10).size());
+        assertEquals(10, service.getSutras(1L, 1, "ro", 1, 10).size());
+    }
+
+    @Test public void testAvailableLanguages() {
+        List<String> langCodes = service.getAvailableLanguages(1L);
+        assertTrue(langCodes.contains("as"));
+        assertTrue(langCodes.contains("ro"));
+    }
+
+    @Test public void testGetChapter() {
+        Chapter chapter = service.getChapter(1L, 1);
+        assertEquals("ARJUN-VISHAD", chapter.getName().toUpperCase());
     }
 }

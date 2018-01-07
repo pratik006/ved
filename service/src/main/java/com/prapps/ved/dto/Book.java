@@ -9,6 +9,7 @@ public class Book {
 	private String name;
 	private String authorName;
 	private String previewUrl;
+	private List<String> availableLanguages;
 
 	public String getName() {
 		return name;
@@ -41,4 +42,7 @@ public class Book {
 
 	public List<Chapter> getChapters() { if (chapters == null) { chapters = new ArrayList<>(); } return chapters; }
 	public void setChapters(List<Chapter> chapters) { this.chapters = chapters; }
+
+	public List<String> getAvailableLanguages() { return availableLanguages; }
+	public void setAvailableLanguages(List<String> availableLanguages) { this.availableLanguages = availableLanguages; }
 }
