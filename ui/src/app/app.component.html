@@ -1,8 +1,21 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" >
   <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name"><a [routerLink]="['/home']">{{title.toUpperCase()}}</a> | {{subtitle}}</h1>
-      
+    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: baseline; width: 100%;">
+      <div><button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button></div>
+      <div style="flex-grow: 1"><h1><a [routerLink]="['/home']">{{title.toUpperCase()}}</a> | {{subtitle}}</h1></div>
+      <div style="flex-grow: 8; display: flex; justify-content: flex-end;">
+        <button mat-button [matMenuTriggerFor]="menu"><i class="material-icons">settings</i></button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="language">Language</button>
+          <button mat-menu-item>Item 2</button>
+        </mat-menu>
+
+        <mat-menu #language="matMenu">
+            <button mat-menu-item>Birds</button>
+            <button mat-menu-item>Mammals</button>
+          </mat-menu>
+      </div>
+    </div>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container"
