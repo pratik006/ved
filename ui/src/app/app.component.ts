@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   subtitle = '';
   selectedBook: Book;
   selectedLang: string;
+  selectedTranslations: string[];
   @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
       error => console.log(error)
     );
     this.vedService.langCodeObservable.subscribe(langCode => this.selectedLang = langCode);
+    this.vedService.translationsObservable.subscribe(translations => this.selectedTranslations = translations);
   }
 
   ngAfterViewInit(): void {
@@ -57,6 +59,10 @@ export class AppComponent implements OnInit {
 
   selectLang(lang: string): void {
     this.vedService.setLangCode(lang);
+  }
+
+  selectTranslation(translation: string): void {
+    this.vedService.setTranslation(translation);
   }
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));

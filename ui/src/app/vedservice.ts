@@ -16,6 +16,8 @@ export class VedService {
   private endIndex: number = 10;
   private book: Book;
   private selChapterNo: number = 1;
+  private langCode: string = "ro";
+  private translations: string[] = [];
 
   options: RequestOptions = new RequestOptions();
   private booksSource = new BehaviorSubject<Book[]>([]);
@@ -29,9 +31,12 @@ export class VedService {
   private chapterNoSource = new BehaviorSubject<number>(1);
   chapterNo = this.chapterNoSource.asObservable();
 
-  private langCode: string = "ro";
+  
   private langCodeSource = new BehaviorSubject<string>(this.langCode);
   langCodeObservable = this.langCodeSource.asObservable();
+
+  private translationsSource = new BehaviorSubject<string[]>([]);
+  translationsObservable = this.translationsSource.asObservable();
 
   constructor(private http: Http) {
     this.options.headers = new Headers();
@@ -91,5 +96,15 @@ export class VedService {
         this.selectedBookSource.next(this.book);
       }
     );
+  }
+
+  setTranslation(translation: string): void {
+    const index: number = this.translations.indexOf(translation);
+    if (index == -1) {
+      this.translations = this.translations.concat(translation);
+    } else {
+      delete this.translations[index];
+    }
+    this.translationsSource.next(this.translations);
   }
 }

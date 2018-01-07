@@ -10,6 +10,7 @@ public class Book {
 	private String authorName;
 	private String previewUrl;
 	private List<Language> availableLanguages;
+	private List<Commentary> availableCommentaries;
 
 	public String getName() {
 		return name;
@@ -45,4 +46,7 @@ public class Book {
 
 	public List<Language> getAvailableLanguages() { return availableLanguages; }
 	public void setAvailableLanguages(List<Language> availableLanguages) { this.availableLanguages = availableLanguages; }
+
+	public List<Commentary> getAvailableCommentaries() { return availableCommentaries; }
+	public void setAvailableCommentaries(List<Commentary> commentaries) { this.availableCommentaries = commentaries; }
 }

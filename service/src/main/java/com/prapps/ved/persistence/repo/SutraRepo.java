@@ -1,5 +1,6 @@
 package com.prapps.ved.persistence.repo;
 
+import com.prapps.ved.persistence.CommentaryEntity;
 import com.prapps.ved.persistence.LanguageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -21,4 +22,7 @@ public interface SutraRepo extends JpaRepository<SutraEntity, Long> {
 
     @Query("select distinct s.language from SutraEntity s where s.chapter.id.bookId= :bookId")
     List<LanguageEntity> getAvailableScripts(@Param("bookId") Long bookId);
+
+    @Query("select distinct c from CommentaryEntity c where c.sutra.bookId= :bookId and c.sutra.language.code='as' and c.sutra.id=1")
+    List<CommentaryEntity> getAvailableTranslations(@Param("bookId") Long bookId);
 }

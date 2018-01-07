@@ -7,7 +7,7 @@
         <button mat-button [matMenuTriggerFor]="menu"><i class="material-icons">settings</i></button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="language">Language</button>
-          <button mat-menu-item>Translations</button>
+          <button mat-menu-item [matMenuTriggerFor]="translations">Translations</button>
         </mat-menu>
 
         <mat-menu #language="matMenu">            
@@ -15,6 +15,12 @@
             <i class="material-icons" *ngIf="selectedLang==lang.code">done</i>{{lang.name}}
           </button>
         </mat-menu>
+
+        <mat-menu #translations="matMenu">            
+            <button (click)="selectTranslation(comm.commentator)" mat-menu-item *ngFor="let comm of selectedBook.availableCommentaries">
+              <i class="material-icons" *ngIf="selectedTranslations.indexOf(comm.commentator) != -1">done</i>{{comm.commentator}}
+            </button>
+          </mat-menu>
       </div>
     </div>
   </mat-toolbar>

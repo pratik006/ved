@@ -1,19 +1,13 @@
 package com.prapps.ved.service;
 
-import com.prapps.ved.dto.Book;
-import com.prapps.ved.dto.Chapter;
-import com.prapps.ved.dto.Language;
-import com.prapps.ved.mapper.BookMapper;
-import com.prapps.ved.mapper.ChapterMapper;
-import com.prapps.ved.mapper.LanguageMapper;
+import com.prapps.ved.dto.*;
+import com.prapps.ved.mapper.*;
 import com.prapps.ved.persistence.*;
 import com.prapps.ved.persistence.repo.ChapterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.prapps.ved.dto.Sutra;
-import com.prapps.ved.mapper.SutraMapper;
 import com.prapps.ved.persistence.repo.BookRepo;
 import com.prapps.ved.persistence.repo.SutraRepo;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +24,7 @@ public class VedService {
 	@Autowired BookMapper bookMapper;
 	@Autowired ChapterMapper chapterMapper;
 	@Autowired LanguageMapper languageMapper;
+	@Autowired CommentaryMapper commentaryMapper;
 
 	public Sutra getSutra(Long bookId, Integer chapterNo, Integer sutraNo, String script) {
 		SutraEntity entity = new SutraEntity();
@@ -62,11 +57,16 @@ public class VedService {
 		Book book = bookMapper.map(bookRepo.findOne(Example.of(example)), Boolean.TRUE);
 		book.getChapters().get(chapterNo-1).setSutras( getSutras(book.getId(), chapterNo, script, startIndex, size) );
 		book.setAvailableLanguages(getAvailableLanguages(id));
+		book.setAvailableCommentaries(getAvailableTranslations(id));
 		return book;
 	}
 
 	public List<Language> getAvailableLanguages(Long bookId) {
 		return languageMapper.map(sutraRepo.getAvailableScripts(bookId));
+	}
+
+	public List<Commentary> getAvailableTranslations(Long bookId) {
+		return commentaryMapper.map(sutraRepo.getAvailableTranslations(bookId));
 	}
 
 	public Chapter getChapter(Long bookId, Integer chapterNo) {

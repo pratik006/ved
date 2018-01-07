@@ -2,7 +2,9 @@ package com.prapps.ved;
 
 import com.prapps.ved.dto.Book;
 import com.prapps.ved.dto.Chapter;
+import com.prapps.ved.dto.Commentary;
 import com.prapps.ved.dto.Language;
+import com.prapps.ved.persistence.CommentaryEntity;
 import com.prapps.ved.service.VedService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +47,11 @@ public class TestConfigLoader {
 
     @Test public void testAvailableLanguages() {
         List<Language> lang = service.getAvailableLanguages(1L);
+        assertTrue(!lang.isEmpty());
+    }
+
+    @Test public void testAvailableTranslations() {
+        List<Commentary> lang = service.getAvailableTranslations(1L);
         assertTrue(!lang.isEmpty());
     }
 
