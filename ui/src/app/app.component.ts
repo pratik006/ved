@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   title = 'Ved Sangraha';
   subtitle = '';
   selectedBook: Book;
-  selectedLang: string = "ro";
+  selectedLang: string;
   @ViewChild('snav') snav: MatSidenav;
 
   ngOnInit() { 
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
       },
       error => console.log(error)
     );
+    this.vedService.langCodeObservable.subscribe(langCode => this.selectedLang = langCode);
   }
 
   ngAfterViewInit(): void {
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   selectLang(lang: string): void {
-    this.selectedLang = lang;
+    this.vedService.setLangCode(lang);
   }
 
   shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));

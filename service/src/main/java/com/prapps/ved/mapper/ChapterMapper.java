@@ -16,6 +16,7 @@ public class ChapterMapper {
         Chapter chapter = new Chapter();
         BeanUtils.copyProperties(entity, chapter);
         chapter.setSutras(detail?sutraMapper.map(entity.getSutras()):Collections.emptyList());
+        chapter.setChapterNo(entity.getId().getChapterNo());
         return chapter;
     }
 

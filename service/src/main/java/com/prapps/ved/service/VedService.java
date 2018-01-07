@@ -45,7 +45,7 @@ public class VedService {
 
 	public List<Sutra> getSutras(Long bookId, int chapterNo, String script, int startIndex, int size) {
 		return sutraMapper.map(
-				sutraRepo.findBySutraNoBetween(bookId, chapterNo, "ro", startIndex, startIndex + size - 1));
+				sutraRepo.findBySutraNoBetween(bookId, chapterNo, script, startIndex, startIndex + size - 1));
 	}
 
 	public List<Book> getBooks() {

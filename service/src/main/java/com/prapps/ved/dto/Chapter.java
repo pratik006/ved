@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Chapter {
-    private int id;
+    private int chapterNo;
     private String name;
     @JsonIgnore
     private Book book;
@@ -17,9 +17,9 @@ public class Chapter {
     private String content;
     private List<Sutra> sutras;
 
-    public int getId() { return id; }
+    public int getChapterNo() { return chapterNo; }
 
-    public void setId(int id) { this.id = id; }
+    public void setChapterNo(int id) { this.chapterNo = id; }
 
     public String getName() { return name; }
 

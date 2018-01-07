@@ -12,16 +12,26 @@ import 'rxjs/Rx';
 @Injectable()
 export class VedService {
   baseUrl = "http://localhost:8080/rest";
+  private startIndex: number = 1;
+  private endIndex: number = 10;
+  private book: Book;
+  private selChapterNo: number = 1;
+
   options: RequestOptions = new RequestOptions();
   private booksSource = new BehaviorSubject<Book[]>([]);
   books = this.booksSource.asObservable();
 
+  
   private selectedBookSource = new BehaviorSubject<Book>(new Book());
   selectedBook = this.selectedBookSource.asObservable();
 
-  private book: Book;
+  private selectedChapterNo: number = 1;
   private chapterNoSource = new BehaviorSubject<number>(1);
   chapterNo = this.chapterNoSource.asObservable();
+
+  private langCode: string = "ro";
+  private langCodeSource = new BehaviorSubject<string>(this.langCode);
+  langCodeObservable = this.langCodeSource.asObservable();
 
   constructor(private http: Http) {
     this.options.headers = new Headers();
@@ -53,14 +63,33 @@ export class VedService {
   }
 
   getSutras(bookId: number, chapterNo: number, startIndex: number, len: number): void {
+    this.startIndex = startIndex;
+    this.endIndex = this.startIndex + len;
+
+    this.callGetSutras(bookId, chapterNo, startIndex, len).subscribe(response => {
+      this.book.chapters[chapterNo-1].sutras = this.book.chapters[chapterNo-1].sutras.concat(response.json());
+      this.selectedBookSource.next(this.book);
+    });
+  }
+
+  callGetSutras(bookId: number, chapterNo: number, startIndex: number, len: number): Observable<Response> {
     console.log("chapter: "+chapterNo+"\tstartIndex: "+startIndex+"\len: "+len);
     const options: RequestOptions = new RequestOptions();
     options.params = new URLSearchParams();
     options.params.append("startIndex", ""+startIndex);
     options.params.append("size", ""+len);
-    this.http.get(this.baseUrl + "/"+bookId+"/"+chapterNo+"/sutras", options).subscribe(response => {
-      this.book.chapters[chapterNo-1].sutras = this.book.chapters[chapterNo-1].sutras.concat(response.json());
-      this.selectedBookSource.next(this.book);
-    });
+    options.params.append("script", this.langCode);
+    return this.http.get(this.baseUrl + "/"+bookId+"/"+chapterNo+"/sutras", options)
+  }
+
+  setLangCode(langCode: string): void {
+    this.langCode = langCode;
+    this.langCodeSource.next(langCode);
+    this.callGetSutras(this.book.id, this.selectedChapterNo, 1, this.endIndex).subscribe(
+      response => {
+        this.book.chapters[this.selChapterNo-1].sutras = response.json();
+        this.selectedBookSource.next(this.book);
+      }
+    );
   }
 }
