@@ -19,10 +19,10 @@ public class SutraEntity {
 	private Long bookId;
 	@Column(length = 10000, nullable = false)
 	private String content;
-	@Column(nullable = false)
-	private String langCode;
-	@Column(nullable = false)
-	private String language;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_code", insertable = false, updatable = false)
+	private LanguageEntity language;
 
 	@ManyToOne
 	@JoinColumns({
@@ -59,13 +59,6 @@ public class SutraEntity {
 		this.content = content;
 	}
 
-	public String getLangCode() {
-		return langCode;
-	}
-	public void setLangCode(String langCode) {
-		this.langCode = langCode;
-	}
-
 	public Set<CommentaryEntity> getCommentaries() {
 		if (null == commentaries) {
 			commentaries = new HashSet<>();
@@ -81,13 +74,13 @@ public class SutraEntity {
 	public void setChapter(ChapterEntity chapter) { this.chapter = chapter; }
 
 	public int hashCode() {
-		return Objects.hash( id, sutraNo, langCode );
+		return Objects.hash( id, sutraNo );
 	}
 
-	public String getLanguage() {
+	public LanguageEntity getLanguage() {
 		return language;
 	}
-	public void setLanguage(String language) {
+	public void setLanguage(LanguageEntity language) {
 		this.language = language;
 	}
 }

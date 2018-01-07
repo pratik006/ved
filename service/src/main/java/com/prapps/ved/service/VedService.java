@@ -2,11 +2,11 @@ package com.prapps.ved.service;
 
 import com.prapps.ved.dto.Book;
 import com.prapps.ved.dto.Chapter;
+import com.prapps.ved.dto.Language;
 import com.prapps.ved.mapper.BookMapper;
 import com.prapps.ved.mapper.ChapterMapper;
-import com.prapps.ved.persistence.BookEntity;
-import com.prapps.ved.persistence.ChapterEntity;
-import com.prapps.ved.persistence.ChapterIdEntity;
+import com.prapps.ved.mapper.LanguageMapper;
+import com.prapps.ved.persistence.*;
 import com.prapps.ved.persistence.repo.ChapterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.prapps.ved.dto.Sutra;
 import com.prapps.ved.mapper.SutraMapper;
-import com.prapps.ved.persistence.SutraEntity;
 import com.prapps.ved.persistence.repo.BookRepo;
 import com.prapps.ved.persistence.repo.SutraRepo;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +29,15 @@ public class VedService {
 	@Autowired SutraMapper sutraMapper;
 	@Autowired BookMapper bookMapper;
 	@Autowired ChapterMapper chapterMapper;
+	@Autowired LanguageMapper languageMapper;
 
 	public Sutra getSutra(Long bookId, Integer chapterNo, Integer sutraNo, String script) {
 		SutraEntity entity = new SutraEntity();
 		//entity.setBook(bookRepo.findOne(bookId));
 		entity.setSutraNo(sutraNo);
-		entity.setLangCode(script);
+		LanguageEntity languageEntity = new LanguageEntity();
+		languageEntity.setCode(script);
+		entity.setLanguage(languageEntity);
 		//entity.setChapterNo(chapterNo);
 		Example<SutraEntity> example = Example.of(entity);
 		return sutraMapper.map(sutraRepo.findOne(example));
@@ -63,8 +65,8 @@ public class VedService {
 		return book;
 	}
 
-	public List<String> getAvailableLanguages(Long bookId) {
-		return sutraRepo.getAvailableScripts(bookId);
+	public List<Language> getAvailableLanguages(Long bookId) {
+		return languageMapper.map(sutraRepo.getAvailableScripts(bookId));
 	}
 
 	public Chapter getChapter(Long bookId, Integer chapterNo) {
