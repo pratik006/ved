@@ -1,9 +1,0 @@
-.selected {
-    font-weight: bold;
-}
-
-li:hover {
-    background-color: grey;
-    color: #673ab7;
-    font-weight: bold;
-}

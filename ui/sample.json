@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Shrimad Bhagwat Gita",
+    "authorName": "Shri Krishna",
+    "previewUrl": "gita.jpg",
+    "availableLanguages": null,
+    "availableCommentaries": null,
+    "chapters": []
+  },
+  {
+    "id": 2,
+    "name": "Valmiki Ramayanam",
+    "authorName": "Valmiki",
+    "previewUrl": "valmiki-ramayan.jpg",
+    "availableLanguages": null,
+    "availableCommentaries": null,
+    "chapters": []
+  }
+]
