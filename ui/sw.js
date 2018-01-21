@@ -1,4 +1,4 @@
-importScripts('./node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+importScripts('workbox-sw.prod.v2.1.2.js');
 
 const staticAssets = [
   './',
