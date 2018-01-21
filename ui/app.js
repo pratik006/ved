@@ -2,6 +2,7 @@ const sourceSelector = document.querySelector('#sources');
 const mainContents = document.querySelector('main');
 const navbarTitle = document.querySelector('.navbar-title');
 const bookScriptOption = document.querySelector('#book-script-option > a > select');
+const commentaryOption = document.querySelector('#commentary-option > a > select');
 const context = {
   "script": "dv",
   "baseUrl": "https://vedsangraha-187514.firebaseio.com/ved/",
@@ -129,7 +130,17 @@ async function selectChapter(chapterNo) {
         }
         bookScriptOption.append(opt);
       })}
-  ).catch(handleError);  
+  ).catch(handleError);
+
+  fetch(context.baseUrl+`${context.bookCode}-commentators.json`).then(data => data.json())
+    .then(commentaries => { 
+      commentaries.map(commentary => {
+        var opt = document.createElement('option');
+        opt.value = commentary.id;
+        opt.innerHTML = commentary.commentator+" - "+commentary.language;
+        commentaryOption.append(opt);      
+    });
+  }).catch(handleError);
 }
 
 function showSutras(sutra, index) {
