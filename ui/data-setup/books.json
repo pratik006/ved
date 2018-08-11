@@ -6,6 +6,7 @@
     "previewUrl": "gita.jpg",
     "availableLanguages": null,
     "availableCommentaries": null,
+    "code": "gita",
     "chapters": []
   },
   {
@@ -15,6 +16,7 @@
     "previewUrl": "valmiki-ramayan.jpg",
     "availableLanguages": null,
     "availableCommentaries": null,
+    "code": "ramayan",
     "chapters": []
   }
 ]

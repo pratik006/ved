@@ -1,3 +1,5 @@
+const titleDiv = document.querySelector(".navbar-brand");
+
 function createBookListView(book) {
     return `
     <div class="card mtb-1">
@@ -33,6 +35,10 @@ function createSutraView(sutra) {
     <a href='#${gBookCode}?ch=${gChapterName}&sutra=${gSutraNo+1}'>Next</a>
     </div>
     `;
+}
+
+function setTitle(title) {
+    titleDiv.innerHTML = title;
 }
 
 document.addEventListener('touchstart', handleTouchStart, false);        

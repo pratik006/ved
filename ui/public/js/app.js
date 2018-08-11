@@ -11,13 +11,12 @@ var gSutraNo;
 (function() {
     handleUrl(window.location.hash);
     window.addEventListener('hashchange', e => {
-        //const bookCode = e.newURL.split("#")[1];
         handleUrl(e.newURL);
     });
         
 })();
 
-function handleUrl(url) {
+async function handleUrl(url) {
     if (window.location.hash.split("#").length < 2) {
         loadHomePage();
         return;
@@ -25,7 +24,7 @@ function handleUrl(url) {
 
     let suburl = window.location.hash.split("#")[1];
     gBookCode = suburl.split("?")[0];
-    gBook = getBookByCode(gBookCode);
+    gBook = await getBookByCode(gBookCode);
 
     let urlParams = new URLSearchParams(suburl.split("?")[1]);
     gChapterName = urlParams.get("ch");
@@ -39,18 +38,21 @@ function handleUrl(url) {
     loadChapter(gBookCode, gChapterName, gSutraNo);
 }
 
-function loadHomePage() {
-    fetch(BASEDATA_PATH + 'books.json').then(resp => resp.json())
-        .then(books => {
-            books.forEach(book => {
-                viewport.innerHTML += createBookListView(book);
-            });
-        });
+async function loadHomePage() {
+    let books = JSON.parse(localStorage.getItem("books"));
+    if (!books) {
+        books = await fetch(BASEDATA_PATH + 'books.json').then(resp => resp.json());
+    }
+    
+    books.forEach(book => {
+        viewport.innerHTML += createBookListView(book);
+    });
 }
 
 async function loadBook(bookCode) {
     const book = await getBookByCode(bookCode);
     viewport.innerHTML = createBookView(book);
+    setTitle(gBook.info.name);
 }
 
 async function loadChapter(bookCode, chapterName, sutraNo=1) {
@@ -58,6 +60,7 @@ async function loadChapter(bookCode, chapterName, sutraNo=1) {
     const book = await getBookByCode(bookCode);
     const chapter = book.chapters.find(ch => ch.info.name == chapterName);
     viewport.innerHTML = createSutraView(chapter.sutras[sutraNo-1]);
+    setTitle(gBook.info.name+" | "+chapterName);
 }
 
 function sentenceCase(str) {
