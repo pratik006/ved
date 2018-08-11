@@ -3,7 +3,7 @@ const titleDiv = document.querySelector(".navbar-brand");
 function createBookListView(book) {
     return `
     <div class="card mtb-1">
-      <a href="#${book.code}">
+      <a href="#${book.code}?code=${book.code}">
         <img class="card-img-top v-card-image" src="${BASEIMAGE_PATH + book.previewUrl}" alt="Card image">
         <div class="card-body p-0">
             <h5 class="card-title ml-2">${book.name}</h5>
@@ -13,10 +13,10 @@ function createBookListView(book) {
 }
 
 function createBookView(book) {
-    return book.chapters.reduce((acc, chapter) => {
+    return book.chapterSummaries.reduce((acc, chapter) => {
         return acc + `
-        <a href='#${book.info.code}?ch=${chapter.info.name}&sutra=1'><div class="card mt-3" style='box-shadow: 2px 2px'>
-            <div class="col-lg-12">${sentenceCase(chapter.info.name)} - ${sentenceCase(chapter.info.headline)}</div>
+        <a href='#${book.code}?code=${book.code}&ch=${chapter.chapterNo}&sutra=1'><div class="card mt-3" style='box-shadow: 2px 2px'>
+            <div class="col-lg-12">${sentenceCase(chapter.name)} - ${sentenceCase(chapter.headline)}</div>
         </div></a>
         `;
     }, "");
@@ -24,17 +24,24 @@ function createBookView(book) {
 }
 
 function createSutraView(sutra) {
-    return `
+    let html = `
     <div class="card mtb-2 sutra">
         <div class="card-body p-0">
-            <h5 class="card-title ml-2">${sutra["dv"]}</h5>
+            <h5 class="card-title ml-2">${sutra.content}</h5>
         </div>
     </div>
-    <div>
-    <a href='#${gBookCode}?ch=${gChapterName}&sutra=${gSutraNo-1}'>Prev</a>
-    <a href='#${gBookCode}?ch=${gChapterName}&sutra=${gSutraNo+1}'>Next</a>
-    </div>
-    `;
+    <div>`;
+
+   
+    if (gSutraNo > 1) {
+        html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}'>Prev</a>`;
+    }
+    if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
+        html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}'>Next</a>`
+    }
+    
+    html += `</div>`;
+    return html;
 }
 
 function setTitle(title) {
@@ -66,10 +73,14 @@ function handleTouchMove(evt) {
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
         if ( xDiff > 0 ) {
             /* left swipe */ 
-            window.location.href=`#${gBookCode}?ch=${gChapterName}&sutra=${gSutraNo+1}`;
+            if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
+                window.location.href=`#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}`;
+            }
         } else {
             /* right swipe */
-            window.location.href=`#${gBookCode}?ch=${gChapterName}&sutra=${gSutraNo-1}`;
+            if (gSutraNo > 1) {
+                window.location.href=`#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}`;
+            }
         }                       
     } else {
         if ( yDiff > 0 ) {

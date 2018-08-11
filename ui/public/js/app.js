@@ -1,11 +1,11 @@
 const BASEIMAGE_PATH = "https://vedsangraha-187514.firebaseapp.com/images/";
 const BASEDATA_PATH = "https://vedsangraha-187514.firebaseio.com/ved/"
+const DEFAULT_SCRIPT = "dv";
 const viewport = document.querySelector('.viewport');
 
 var gBook;
 var gBookCode;
 var gChapterNo;
-var gChapterName;
 var gSutraNo;
 
 (function() {
@@ -17,25 +17,24 @@ var gSutraNo;
 })();
 
 async function handleUrl(url) {
-    if (window.location.hash.split("#").length < 2) {
+    if (window.location.hash.split("?").length < 2) {
         loadHomePage();
         return;
     }
 
-    let suburl = window.location.hash.split("#")[1];
-    gBookCode = suburl.split("?")[0];
+    let urlParams = new URLSearchParams(window.location.hash.split("?")[1]);
+    gBookCode = urlParams.get("code");
+    gChapterNo = urlParams.get("ch");
+    gSutraNo = urlParams.get("sutra");
     gBook = await getBookByCode(gBookCode);
 
-    let urlParams = new URLSearchParams(suburl.split("?")[1]);
-    gChapterName = urlParams.get("ch");
-    gSutraNo = parseInt( urlParams.get("sutra") );
-
-    if (!gChapterName) {
+    if (!gChapterNo) {
         loadBook(gBookCode);
         return;
     }
 
-    loadChapter(gBookCode, gChapterName, gSutraNo);
+    gSutraNo = gSutraNo ? parseInt(gSutraNo) : 1;
+    loadSutra(gBookCode, gChapterNo, gSutraNo);
 }
 
 async function loadHomePage() {
@@ -52,15 +51,15 @@ async function loadHomePage() {
 async function loadBook(bookCode) {
     const book = await getBookByCode(bookCode);
     viewport.innerHTML = createBookView(book);
-    setTitle(gBook.info.name);
+    setTitle(gBook.name);
 }
 
-async function loadChapter(bookCode, chapterName, sutraNo=1) {
+async function loadSutra(bookCode, chapterNo, sutraNo=1) {
     viewport.innerHTML = "";
     const book = await getBookByCode(bookCode);
-    const chapter = book.chapters.find(ch => ch.info.name == chapterName);
-    viewport.innerHTML = createSutraView(chapter.sutras[sutraNo-1]);
-    setTitle(gBook.info.name+" | "+chapterName);
+    //const chapter = book.chapterSummaries.find(ch => ch.chapterNo == chapterNo);
+    viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
+    setTitle(getChapterName(gBook, gChapterNo));
 }
 
 function sentenceCase(str) {
@@ -74,8 +73,12 @@ function sentenceCase(str) {
 async function getBookByCode(bookCode) {
     let book = JSON.parse(localStorage.getItem(bookCode));
     if (!book) {
-        book = await fetch(BASEDATA_PATH + bookCode + ".json").then(resp => resp.json());
+        book = await fetch(BASEDATA_PATH + bookCode +"-"+ DEFAULT_SCRIPT + ".json").then(resp => resp.json());
         localStorage.setItem(bookCode, JSON.stringify(book));
     }
     return book;    
+}
+
+function getChapterName(book, chapterNo) {
+    return book.chapterSummaries.find(ch => ch.chapterNo == chapterNo).name;
 }
