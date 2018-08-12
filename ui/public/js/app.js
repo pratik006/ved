@@ -43,6 +43,7 @@ async function handleUrl(url) {
     gChapterNo = urlParams.get("ch");
     gSutraNo = urlParams.get("sutra");
     gBook = await getBookByCode(gBookCode);
+    
 
     if (!gChapterNo) {
         loadBook(gBookCode);
@@ -51,6 +52,16 @@ async function handleUrl(url) {
 
     gSutraNo = gSutraNo ? parseInt(gSutraNo) : 1;
     loadSutra(gBookCode, gChapterNo, gSutraNo);
+
+    scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);
+    scriptsDiv.addEventListener('click', evt => {
+        if (evt.target.type == "checkbox") {
+            if (!gPreferences.languages.includes(evt.target.name))
+                gPreferences.languages.push(evt.target.name);
+            updatePreference();
+            location.reload();
+        }
+    });
 }
 
 async function loadHomePage() {
@@ -70,15 +81,8 @@ async function loadBook(bookCode) {
     gBook = book;
     viewport.innerHTML = createBookView(book);
     setTitle(gBook.name);
-
-    document.querySelector(".scripts > ul").innerHTML = createScriptsView(gBook.availableLanguages);
-    scriptsDiv.addEventListener('click', evt => {
-        if (evt.target.type == "checkbox") {
-            gPreferences.languages.push(evt.target.name);
-            updatePreference();
-            location.reload();
-        }
-    });
+    
+    
 }
 
 async function loadSutra(bookCode, chapterNo, sutraNo=1) {
