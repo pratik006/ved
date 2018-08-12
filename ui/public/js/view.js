@@ -27,7 +27,7 @@ function createBookView(book) {
 
 function createSutraView(sutra) {
     let html = `
-    <div class="card mtb-2 sutra">
+    <div class="card mt-4 v-sutra">
         <div class="card-body p-0">
             <h5 class="card-title ml-2">${sutra.content}</h5>
         </div>
@@ -35,14 +35,14 @@ function createSutraView(sutra) {
     <div>`;
 
    
-    if (gSutraNo > 1) {
-        html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}'>Prev</a>`;
-    }
-    if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
-        html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}'>Next</a>`
-    }
+    // if (gSutraNo > 1) {
+    //     html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}'>Prev</a>`;
+    // }
+    // if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
+    //     html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}'>Next</a>`
+    // }
     
-    html += `</div>`;
+    // html += `</div>`;
     return html;
 }
 

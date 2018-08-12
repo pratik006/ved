@@ -2,6 +2,10 @@ const BASEIMAGE_PATH = "https://vedsangraha-187514.firebaseapp.com/images/";
 const BASEDATA_PATH = "https://vedsangraha-187514.firebaseio.com/ved/"
 const DEFAULT_SCRIPT = "dv";
 const viewport = document.querySelector('.viewport');
+const footerMenu = document.querySelector('.v-footer');
+const nextBtn = document.querySelector('.v-footer .next');
+const prevBtn = document.querySelector('.v-footer .prev');
+const homeBtn = document.querySelector('.v-footer .home');
 
 var gBook;
 var gBookCode;
@@ -13,12 +17,17 @@ var gSutraNo;
     window.addEventListener('hashchange', e => {
         handleUrl(e.newURL);
     });
+
+    nextBtn.addEventListener('click', evt => nextSutra());
+    prevBtn.addEventListener('click', evt => prevSutra());
+    homeBtn.addEventListener('click', evt => {});
         
 })();
 
 async function handleUrl(url) {
     if (window.location.hash.split("?").length < 2) {
         loadHomePage();
+        nextBtn.querySelector("a").removeAttribute("href");
         return;
     }
 
@@ -60,8 +69,19 @@ async function loadSutra(bookCode, chapterNo, sutraNo=1) {
     const book = await getBookByCode(bookCode);
     //const chapter = book.chapterSummaries.find(ch => ch.chapterNo == chapterNo);
     viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
-    setTitle(getChapterName(gBook, gChapterNo));
+    setTitle(getChapterName(gBook, gChapterNo)+" | Verse "+gSutraNo);
 }
+
+function prevSutra() {
+    const url = `#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}`;
+    window.location.href = url;
+}
+
+function nextSutra() {
+    const url = `#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}`;
+    window.location.href = url;
+}
+
 
 function sentenceCase(str) {
 	str = str.toLowerCase().split(' ');

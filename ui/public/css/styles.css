@@ -35,3 +35,8 @@
 .v-chapter-summary div {
     color: black;
 }
+
+.v-sutra {
+    box-shadow: 2px 2px;
+    padding: 10px;
+}
