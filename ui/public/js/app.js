@@ -6,7 +6,7 @@ const footerMenu = document.querySelector('.v-footer');
 const nextBtn = document.querySelector('.v-footer .next');
 const prevBtn = document.querySelector('.v-footer .prev');
 const homeBtn = document.querySelector('.v-footer .home');
-const scriptsDiv = document.querySelector('.scripts');
+const scriptsDiv = document.querySelector('.scripts > ul');
 
 var gBook;
 var gBookCode;
