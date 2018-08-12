@@ -46,6 +46,20 @@ function createSutraView(sutra) {
     return html;
 }
 
+function createScriptsView(languages) {
+    return languages.reduce((acc, language) => {
+        return acc + `<div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                <input type="checkbox" name="${language.code}" aria-label="" ${gPreferences.languages.includes(language.code) ? "checked" : ""}>
+                </div>
+            </div>
+            <input type="text" class="form-control" disabled value="${language.name}">
+        </div>
+        `;
+    }, "");
+}
+
 function setTitle(title) {
     titleDiv.innerHTML = title;
 }

@@ -6,13 +6,21 @@ const footerMenu = document.querySelector('.v-footer');
 const nextBtn = document.querySelector('.v-footer .next');
 const prevBtn = document.querySelector('.v-footer .prev');
 const homeBtn = document.querySelector('.v-footer .home');
+const scriptsDiv = document.querySelector('.scripts');
 
 var gBook;
 var gBookCode;
 var gChapterNo;
 var gSutraNo;
+var gPreferences = new Object();
 
 (function() {
+    gPreferences = JSON.parse(localStorage.getItem('gPreferences'));
+    if (!gPreferences) {
+        gPreferences = new Object();
+        gPreferences.languages = ['dv'];
+    }
+
     handleUrl(window.location.hash);
     window.addEventListener('hashchange', e => {
         handleUrl(e.newURL);
@@ -21,7 +29,6 @@ var gSutraNo;
     nextBtn.addEventListener('click', evt => nextSutra());
     prevBtn.addEventListener('click', evt => prevSutra());
     homeBtn.addEventListener('click', evt => {});
-        
 })();
 
 async function handleUrl(url) {
@@ -60,15 +67,29 @@ async function loadHomePage() {
 
 async function loadBook(bookCode) {
     const book = await getBookByCode(bookCode);
+    gBook = book;
     viewport.innerHTML = createBookView(book);
     setTitle(gBook.name);
+
+    document.querySelector(".scripts > ul").innerHTML = createScriptsView(gBook.availableLanguages);
+    scriptsDiv.addEventListener('click', evt => {
+        if (evt.target.type == "checkbox") {
+            gPreferences.languages.push(evt.target.name);
+            updatePreference();
+            location.reload();
+        }
+    });
 }
 
 async function loadSutra(bookCode, chapterNo, sutraNo=1) {
     viewport.innerHTML = "";
     const book = await getBookByCode(bookCode);
-    //const chapter = book.chapterSummaries.find(ch => ch.chapterNo == chapterNo);
-    viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
+    gPreferences.languages.forEach(lang => {
+        getSutrasByLanguage(lang).then(sutras => {
+            viewport.innerHTML += createSutraView(sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));    
+        });
+    });
+    //viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
     setTitle(getChapterName(gBook, gChapterNo)+" | Verse "+gSutraNo);
 }
 
@@ -98,6 +119,22 @@ async function getBookByCode(bookCode) {
         localStorage.setItem(bookCode, JSON.stringify(book));
     }
     return book;    
+}
+
+async function getSutrasByLanguage(language) {
+    const key = gBookCode+"-sutras-"+language;
+    let sutras = JSON.parse(localStorage.getItem(key));
+
+    if (!sutras) {
+        sutras = await fetch(BASEDATA_PATH + key + ".json").then(resp => resp.json());
+        localStorage.setItem(key, JSON.stringify(sutras));
+    }
+
+    return sutras;
+}
+
+function updatePreference() {
+    localStorage.setItem('gPreferences', JSON.stringify(gPreferences));
 }
 
 function getChapterName(book, chapterNo) {
