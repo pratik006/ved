@@ -43,6 +43,7 @@ async function loadHomePage() {
         books = await fetch(BASEDATA_PATH + 'books.json').then(resp => resp.json());
     }
     
+    viewport.innerHTML = "";
     books.forEach(book => {
         viewport.innerHTML += createBookListView(book);
     });

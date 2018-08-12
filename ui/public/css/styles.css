@@ -12,7 +12,6 @@
     line-height: 1.5;
     color: white;
 }
-
   
 .v-footer a {
     float: left;
@@ -21,5 +20,18 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    height: 6vh;
+}
+
+.navbar-brand {
+    font-size: 25px;
+}
+
+.v-chapter-summary {
+    font-size: 24px;
+    box-shadow: 2px 2px;
+}
+
+.v-chapter-summary div {
+    color: black;
 }

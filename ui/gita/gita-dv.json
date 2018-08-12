@@ -1,6 +1,7 @@
 {
   "id" : 1,
   "name" : "Shrimad Bhagwat Gita",
+  "code" : "gita",
   "authorName" : "Shri Krishna",
   "previewUrl" : "https://vedsangraha-187514.firebaseapp.com/images/gita.jpg",
   "chapterSummaries": [

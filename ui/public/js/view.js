@@ -15,9 +15,11 @@ function createBookListView(book) {
 function createBookView(book) {
     return book.chapterSummaries.reduce((acc, chapter) => {
         return acc + `
-        <a href='#${book.code}?code=${book.code}&ch=${chapter.chapterNo}&sutra=1'><div class="card mt-3" style='box-shadow: 2px 2px'>
-            <div class="col-lg-12">${sentenceCase(chapter.name)} - ${sentenceCase(chapter.headline)}</div>
-        </div></a>
+        <div class="card mb-4 pb-2 mt-4 pt-2 v-chapter-summary">
+            <a href='#${book.code}?code=${book.code}&ch=${chapter.chapterNo}&sutra=1'>
+                <div class="col-lg-12">${sentenceCase(chapter.name)} - ${sentenceCase(chapter.headline)}</div>
+            </a>
+        </div>
         `;
     }, "");
     
