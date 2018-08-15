@@ -26,23 +26,12 @@ function createBookView(book) {
 }
 
 function createSutraView(sutra) {
-    let html = `
+    return `
     <div class="card mt-4 v-sutra">
         <div class="card-body p-0">
             <h5 class="card-title ml-2">${sutra.content}</h5>
         </div>
     </div>`;
-
-   
-    // if (gSutraNo > 1) {
-    //     html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo-1}'>Prev</a>`;
-    // }
-    // if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
-    //     html += `<a href='#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}'>Next</a>`
-    // }
-    
-    // html += `</div>`;
-    return html;
 }
 
 function createScriptsView(languages) {
@@ -54,6 +43,20 @@ function createScriptsView(languages) {
                 </div>
             </div>
             <input type="text" class="form-control" disabled value="${language.name}">
+        </div>
+        `;
+    }, "");
+}
+
+function createCommentariesView(commentaries) {
+    return commentaries.reduce((acc, commentary) => {
+        return acc + `<div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                <input type="checkbox" name="${commentary}" aria-label="" ${gPreferences.commentaries.includes(commentary) ? "checked" : ""}>
+                </div>
+            </div>
+            <input type="text" class="form-control" disabled value="${commentary}">
         </div>
         `;
     }, "");

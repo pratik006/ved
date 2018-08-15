@@ -7,6 +7,7 @@ const nextBtn = document.querySelector('.v-footer .next');
 const prevBtn = document.querySelector('.v-footer .prev');
 const homeBtn = document.querySelector('.v-footer .home');
 const scriptsDiv = document.querySelector('.scripts > ul');
+const commentariesDiv = document.querySelector('.commentaries > ul');
 
 var gBook;
 var gBookCode;
@@ -19,6 +20,7 @@ var gPreferences = new Object();
     if (!gPreferences) {
         gPreferences = new Object();
         gPreferences.languages = ['dv'];
+        gPreferences.commentaries = [];
     }
 
     handleUrl(window.location.hash);
@@ -54,6 +56,7 @@ async function handleUrl(url) {
     loadSutra(gBookCode, gChapterNo, gSutraNo);
 
     scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);
+    commentariesDiv.innerHTML = createCommentariesView(gBook.availableCommentaries);
     scriptsDiv.addEventListener('change', evt => {
         console.log("checked: "+evt.target.checked);
         if (evt.target.type == "checkbox") {
