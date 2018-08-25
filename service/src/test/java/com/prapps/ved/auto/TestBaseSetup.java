@@ -1,310 +1,64 @@
-package com.barsha;
+package com.prapps.ved.auto;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TestBaseSetup {
-	private static final Logger LOG = Logger.getLogger(TestBaseSetup.class.getName()); 
-	protected static final String TESTCASE_FILE = "TMS.csv";
-	private static WebDriver driver;
-	protected JavascriptExecutor jse;
-	protected String defaultDriver;
-	protected WebDriverWait wait;
-	private String binaryLocation;
-	static String driverPath = "lib";
-	private static Properties config = new Properties();
-	protected static Map<String, List<CsvRec>> recordsMap = new HashMap<>();
-	protected Map<String, String> context = new HashMap<>();
-	public Level level;
-	
-	public static <T> T initPage(Class<T> clazz) {
-		return PageFactory.initElements(driver, clazz);
+	protected String BASE_FOLDER = "/media/ext0/iitk-supersite/backup-from-code/gita/";
+	protected String[] languages = new String[] {"as", "bn", "dv", "gu", "pa", "kn", "ml", "or", "ta", "te"};
+	protected Map<Integer, Integer> chapterSutraMap = new HashMap<>();
+	ObjectMapper mapper = new ObjectMapper();
+
+	public void setUp() throws IOException {
+		chapterSutraMap.put(1, 47);
+		chapterSutraMap.put(2, 72);
+		chapterSutraMap.put(3, 43);
+		chapterSutraMap.put(4, 42);
+		chapterSutraMap.put(5, 29);
+		chapterSutraMap.put(6, 47);
+		chapterSutraMap.put(7, 30);
+		chapterSutraMap.put(8, 28);
+		chapterSutraMap.put(9, 34);
+		chapterSutraMap.put(10, 42);
+		chapterSutraMap.put(11, 55);
+		chapterSutraMap.put(12, 20);
+		chapterSutraMap.put(13, 35);
+		chapterSutraMap.put(14, 27);
+		chapterSutraMap.put(15, 20);
+		chapterSutraMap.put(16, 24);
+		chapterSutraMap.put(17, 28);
+		chapterSutraMap.put(18, 78);
 	}
 
-	public WebDriver getDriver(String driverName) {
-		return driver;
-	}
-
-	public WebDriver getDriver() {
-		return driver;
-	}
-
-	protected String getCurrentUrl() {
-		return driver.getCurrentUrl();
-	}
-
-	private void setDriver() {
-		if ("chrome".equals(defaultDriver)) {
-			driver = initChromeDriver();	
-		} else if("firefox".equals(defaultDriver)) {
-			driver = initFirefoxDriver();
+	public String readFile(int chapter, int sutra, String lang) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(BASE_FOLDER+"gita-"+chapter+"-"+sutra+"-"+lang+".html")
+		));
+		String line;
+		StringBuilder sb = new StringBuilder();
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
 		}
-		
+		reader.close();
+		return sb.toString();
 	}
 
-	private WebDriver initChromeDriver() {
-		LOG.info("Launching google chrome with new profile..");
-		String webdriverLocation = System.getProperty("user.dir") + "/" +config.getProperty("chromeDriverLocation");
-		System.setProperty("webdriver.chrome.driver", webdriverLocation);
-		ChromeOptions options = new ChromeOptions();
-		options.setBinary(binaryLocation);
-		options.addArguments("--disable-extensions");
-		options.setCapability("chrome.switches", Arrays.asList("--disable-extensions"));
-		options.setExperimentalOption("useAutomationExtension", false);
-		driver = new ChromeDriver(options);
-		return driver;
-	}
-	
-	private WebDriver initFirefoxDriver() {
-		LOG.info("Launching Firefox browser.."+config.getProperty("appUrl"));
-		System.setProperty("webdriver.gecko.driver", config.getProperty(defaultDriver+"DriverLocation"));
-		FirefoxBinary binary = new FirefoxBinary(new File(binaryLocation));
-		FirefoxOptions firefoxOptions = new FirefoxOptions();
-		firefoxOptions.setBinary(binary);
-		firefoxOptions.setProfile(new FirefoxProfile());
-		driver = new FirefoxDriver(firefoxOptions);
-		return driver;
-	}
-
-
-	//@Parameters({ "appURL" })
-	public void initializeTestBaseSetup() throws IOException {
-		level = System.getProperty("log.level") == null ? Level.INFO : Level.parse(System.getProperty("log.level"));
-		config.load(getClass().getClassLoader().getResourceAsStream("selenium.properties"));
-		defaultDriver = config.getProperty("defaultDriver");
-		binaryLocation = config.getProperty(defaultDriver+"BinaryLocation");
-		setDriver();
-		driver.manage().window().maximize();
-		driver.navigate().to(config.getProperty("appUrl"));
-		getDriver().manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("waitTime", "100")), TimeUnit.SECONDS);
-		wait = new WebDriverWait(getDriver(), Integer.parseInt(config.getProperty("waitTime", "10")));
-		jse = (JavascriptExecutor) driver;
-	}
-	
-	public static void loadCsv(String filename) {
-		final CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader("Tescase Name", "﻿PAGE NAME", "CSS_CELL", "VALUE", "TYPE");
-		 try (Reader reader = Files.newBufferedReader(Paths.get(filename));
-				 CSVParser csvParser = new CSVParser(reader, csvFileFormat);
-		        ) {
-		            for (CSVRecord csvRecord : csvParser.getRecords()) {
-		            	if (csvRecord.getRecordNumber() > 1) {
-		            		CsvRec rec = new CsvRec();
-		            		String testcaseName = csvRecord.get(0);
-		            		if (!recordsMap.containsKey(testcaseName)) {
-		            			recordsMap.put(testcaseName, new ArrayList<>());
-		            		}
-			            	rec.setPageName(csvRecord.get(1));
-			            	rec.setCssSelector(csvRecord.get(2));
-			            	rec.setValue(csvRecord.get(3));
-			            	if (csvRecord.get(4) != null && csvRecord.get(4).trim().length() > 0)
-			            		rec.setType(ActionType.valueOf(csvRecord.get(4)));
-			            	rec.setRegex(csvRecord.get(5));
-			            	recordsMap.get(testcaseName).add(rec);	
-		            	}
-		            }
-		        } catch (IOException e) {
-					e.printStackTrace();
-				}
-	}
-	
-	protected void handleRecord(CsvRec rec) {
-		LOG.info("Record: "+rec);
-		try {
-			switch (rec.getType()) {
-			case CLICK:
-			click(rec.getCssSelector(), rec.getValue());
-			break;
-			case SELECT:select(rec.getCssSelector(), rec.getValue());
-				break;
-			case SUBMIT:submit(rec.getCssSelector());
-				break;
-			case ENTRY:sendEntry(rec.getCssSelector(), rec.getValue());
-				break;
-			case SAVE:
-				WebElement elem = getElem(rec.getCssSelector());
-				String value = elem.getText().trim();
-				if (rec.getRegex() != null && rec.getRegex().length() > 0) {
-					Pattern p = Pattern.compile(rec.getRegex());
-					Matcher m = p.matcher(value);
-					while (m.find()) {
-						value = m.group(1);	
-					}
-				}
-				context.put(rec.getValue(), value);
-				LOG.info(rec.getValue() + " : " +elem.getText().trim());
-				break;
-			case IFRAME: getDriver().switchTo().frame(getElem(rec.getCssSelector()));
-				break;
-			case UPLOAD:
-				upload(rec.getCssSelector(), rec.getValue());
-				break;
-			case BACK: getDriver().switchTo().defaultContent();
-				break;
-			case WAIT:waitTimer(rec.getValue()==null ? 5000 : Integer.parseInt(rec.getValue()));
-				break;
-			case JS:
-				executeJS(rec.getCssSelector(), rec.getValue());
-				break;
-			case REFERENCE:
-				refer(rec.getCssSelector().trim(), rec.getValue());
-				break;
-			case SET:
-				context.put(rec.getCssSelector(), rec.getValue());
-				break;
-			default:
-				break;
-			}
-		} catch(Exception ex) {
-			System.err.println("Erroneous Record: "+rec);
-			ex.printStackTrace();
-			throw ex;
-		}
-	}
-
-	private void refer(String refName, String value) {
-		LOG.info("Referring to "+refName);
-		if (null == value || value.trim().length() == 0) {
-			recordsMap.get(refName).forEach(rec -> handleRecord(rec));
-			return;
-		}
-		
-		int start = Integer.parseInt(value.split("-")[0].trim());
-		if (value.split("-").length == 1 || value.split("-")[1] == null || value.split("-")[1].trim().length() == 0) {
-			recordsMap.get(refName).subList(start, recordsMap.get(refName).size()).forEach(rec -> handleRecord(rec));
-			return;
-		}
-		
-		int end = Integer.parseInt(value.split("-")[1].trim());
-		recordsMap.get(refName).subList(start, end).forEach(rec -> handleRecord(rec));
-	}
-
-	private void executeJS(String cssSelector, String value) {
-		jse.executeScript(value);
-	}
-
-	private void upload(String cssSel, String value) {
-		WebElement elem = getElem(cssSel);
-		elem.sendKeys(value);
-	}
-
-	protected WebElement getElem(String cssSel) {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(cssSel)));
-		return getDriver().findElement(By.cssSelector(cssSel));
-	}
-	
-	protected List<WebElement> getElems(String cssSel) {
-		return getDriver().findElements(By.cssSelector(cssSel));
-	}
-	
-	protected void sendEntry(String cssSel, String value) {
-		WebElement elem = getElem(cssSel);
-		elem.click();
-		elem.clear();
-		value = isVar(value) ? getVar(value) : value;
-		
-		elem.sendKeys(value);
-	}
-	
-	protected void select(String cssSel, String value) {
-		value = isVar(value) ? getVar(value) : value;
-		try {
-			WebElement elem = getElem(cssSel);
-			int index = Integer.parseInt(value);
-			wait.until(new Function<WebDriver, Object>() {
-				@Override
-				public Object apply(WebDriver t) {
-					return new Select(elem).getOptions().size() > 1;
-				}
-			});
-			new Select(elem).selectByIndex(index);
-		} catch(NumberFormatException ex) {
-			new Select(getElem(cssSel)).selectByVisibleText(value.trim());
-		}
-	}
-	
-	protected void submit(String cssSel){
-		getElem(cssSel).submit();
-	}
-	
-	protected void click(String cssSel, String value){
-		WebElement elem = getElem(cssSel);
-		wait.until(ExpectedConditions.visibilityOf(elem)); 
-		wait.until(ExpectedConditions.elementToBeClickable(elem));
-		
-		if ("radio".equals(elem.getAttribute("type")) && !elem.isSelected()) {
-			Actions actions = new Actions(getDriver());
-			actions.moveToElement(elem).click().perform();
-			if (!elem.isSelected()) {
-				elem.click();
-				if (!elem.isSelected()) {
-					waitTimer(500);
-					click(cssSel, value);	
-				}
-			}
-			
-			return;
-		} 
-		
-		
-		if (value != null && value.length() > 0) {
-			getElems(cssSel).stream()
-				.filter(e -> e.getText().trim().equalsIgnoreCase(value))
-				.findFirst().get()
-				.click();
-			return;
-		} 
-		
-		elem.click();
-	}
-	
-	protected void waitTimer(int val) {
-		try {
-			Thread.sleep(val);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private boolean isVar(String value) {
-		return (value.startsWith("${") && value.endsWith("}"));
-	}
-	
-	private String getVar(String value) {
-		String key = value.substring(2, value.length()-1);
-		return context.get(key);
+	protected void httpPut(String uri, String content) throws IOException {
+		URL url = new URL(uri);
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setReadTimeout(1000000);
+		httpCon.setDoOutput(true);
+		httpCon.setRequestMethod("PUT");
+		httpCon.setRequestProperty("Content-Type", "application/json");
+		httpCon.setRequestProperty("Accept", "application/json");
+		OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+		out.write(content);
+		out.close();
+		httpCon.getInputStream();
 	}
 }
