@@ -8,6 +8,10 @@ const prevBtn = document.querySelector('.v-footer .prev');
 const homeBtn = document.querySelector('.v-footer .home');
 const scriptsDiv = document.querySelector('.scripts > ul');
 const commentariesDiv = document.querySelector('.commentaries > ul');
+const btnMenu = document.querySelector('#menu');
+const btnSettings = document.querySelector('#settings');
+const navbarMenu = document.querySelector("#navbarResponsiveMenu");
+const navbarSettingsMenu = document.querySelector("#navbarResponsiveSettings");
 
 var gBook;
 var gBookCode;
@@ -30,13 +34,22 @@ var gPreferences = new Object();
 
     nextBtn.addEventListener('click', evt => nextSutra());
     prevBtn.addEventListener('click', evt => prevSutra());
-    homeBtn.addEventListener('click', evt => {});
+    homeBtn.addEventListener('click', evt => {});    
+    document.querySelector("body").addEventListener('click', evt => {
+        if (navbarMenu.classList.contains("show")) {
+            btnMenu.click();
+        }
+        if (navbarSettingsMenu.classList.contains("show")) {
+            btnSettings.click();
+        }
+    });
 })();
 
 async function handleUrl(url) {
     if (window.location.hash.split("?").length < 2) {
         loadHomePage();
         nextBtn.querySelector("a").removeAttribute("href");
+        btnMenu.style.display = "none";
         return;
     }
 
@@ -45,7 +58,9 @@ async function handleUrl(url) {
     gChapterNo = urlParams.get("ch");
     gSutraNo = urlParams.get("sutra");
     gBook = await getBookByCode(gBookCode);
-    
+    btnMenu.style.display = gBook ? "block" : "none";
+    navbarMenu.querySelector("ul").innerHTML = createBookNavMenu(gBook);
+    handleTopMenu();
 
     if (!gChapterNo) {
         loadBook(gBookCode);
@@ -54,7 +69,9 @@ async function handleUrl(url) {
 
     gSutraNo = gSutraNo ? parseInt(gSutraNo) : 1;
     loadSutra(gBookCode, gChapterNo, gSutraNo);
+}
 
+async function handleTopMenu() {
     scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);    
     scriptsDiv.addEventListener('change', evt => {
         if (evt.target.type == "checkbox") {
@@ -109,8 +126,6 @@ async function loadBook(bookCode) {
     gBook = book;
     viewport.innerHTML = createBookView(book);
     setTitle(gBook.name);
-    
-    
 }
 
 async function loadSutra(bookCode, chapterNo, sutraNo=1) {

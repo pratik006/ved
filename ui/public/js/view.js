@@ -22,7 +22,6 @@ function createBookView(book) {
         </div>
         `;
     }, "");
-    
 }
 
 function createSutraView(sutra) {
@@ -58,6 +57,18 @@ function createCommentariesView(commentaries) {
             </div>
             <input type="text" class="form-control" disabled value="${commentary}">
         </div>
+        `;
+    }, "");
+}
+
+function createBookNavMenu(book) {
+    return book.chapterSummaries.reduce((acc, chapter) => {
+        return acc + `
+        <li class="nav-item">
+          <a class='nav-link' href='#${book.code}?code=${book.code}&ch=${chapter.chapterNo}&sutra=1'>
+            <div class="col-lg-12">${sentenceCase(chapter.name)} </div>
+          </a>
+        </li>
         `;
     }, "");
 }
