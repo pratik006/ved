@@ -1,6 +1,9 @@
 const BASEIMAGE_PATH = "https://vedsangraha-187514.firebaseapp.com/images/";
 const BASEDATA_PATH = "https://vedsangraha-187514.firebaseio.com/ved/"
 const DEFAULT_SCRIPT = "dv";
+
+const APP_NAME = "Vedsangraha";
+
 const viewport = document.querySelector('.viewport');
 const footerMenu = document.querySelector('.v-footer');
 const nextBtn = document.querySelector('.v-footer .next');
@@ -119,6 +122,7 @@ async function loadHomePage() {
     books.forEach(book => {
         viewport.innerHTML += createBookListView(book);
     });
+    setTitle(APP_NAME);
 }
 
 async function loadBook(bookCode) {
