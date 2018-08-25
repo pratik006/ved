@@ -135,13 +135,22 @@ async function loadBook(bookCode) {
 async function loadSutra(bookCode, chapterNo, sutraNo=1) {
     viewport.innerHTML = "";
     const book = await getBookByCode(bookCode);
+    viewport.innerHTML += "<div class='sutrasPanel'></div><div class='commentariesPanel'><div class='accordion mt-3 mb-3' id='accordionExample'></div></div>";
+    const sutrasPanel = viewport.querySelector('.sutrasPanel');
+    const commPanel = viewport.querySelector('.commentariesPanel > .accordion');
     gPreferences.languages.forEach(lang => {
         getSutrasByLanguage(lang).then(sutras => {
-            viewport.innerHTML += createSutraView(sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));    
+            sutrasPanel.innerHTML += createSutraView(sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));    
         });
     });
     //viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
-    setTitle(getChapterName(gBook, gChapterNo)+" | Verse "+gSutraNo);
+    gPreferences.commentaries.forEach(comm => {        
+        getCommentary(comm, chapterNo, sutraNo).then(commentary => {
+            commPanel.innerHTML += createCommentariesAccordions(comm, commentary);
+        });
+    });
+    
+    setTitle( getChapterName(gBook, gChapterNo)+" | Verse "+gSutraNo) ;
 }
 
 function prevSutra() {
@@ -182,6 +191,23 @@ async function getSutrasByLanguage(language) {
     }
 
     return sutras;
+}
+
+async function getCommentaries(commentator) {
+    const key = gBookCode+"-commentary-"+commentator.replace(" ", "").toLowerCase()+"-english";
+    let commentaries = JSON.parse(localStorage.getItem(key));
+
+    if (!commentaries) {
+        commentaries = await fetch(BASEDATA_PATH + key + ".json").then(resp => resp.json());
+        localStorage.setItem(key, JSON.stringify(commentaries));
+    }
+
+    return commentaries;
+}
+
+async function getCommentary(commentator, chapterNo, sutraNo) {
+    const commentaries = await getCommentaries(commentator);
+    return commentaries.find(c => c.chapter == chapterNo && c.sutra == sutraNo);
 }
 
 function updatePreference() {
