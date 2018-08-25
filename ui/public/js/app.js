@@ -55,10 +55,8 @@ async function handleUrl(url) {
     gSutraNo = gSutraNo ? parseInt(gSutraNo) : 1;
     loadSutra(gBookCode, gChapterNo, gSutraNo);
 
-    scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);
-    commentariesDiv.innerHTML = createCommentariesView(gBook.availableCommentaries);
+    scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);    
     scriptsDiv.addEventListener('change', evt => {
-        console.log("checked: "+evt.target.checked);
         if (evt.target.type == "checkbox") {
             if (evt.target.checked) {
                 if (!gPreferences.languages.includes(evt.target.name)) {
@@ -68,6 +66,24 @@ async function handleUrl(url) {
                 const index = gPreferences.languages.indexOf(evt.target.name);
                 if (index != -1)
                     gPreferences.languages.splice(index, 1);
+            }
+            
+            updatePreference();
+            location.reload();
+        }
+    });
+
+    commentariesDiv.innerHTML = createCommentariesView(gBook.availableCommentaries);
+    commentariesDiv.addEventListener('change', evt => {
+        if (evt.target.type == "checkbox") {
+            if (evt.target.checked) {
+                if (!gPreferences.commentaries.includes(evt.target.name)) {
+                    gPreferences.commentaries.push(evt.target.name);
+                }
+            } else {
+                const index = gPreferences.commentaries.indexOf(evt.target.name);
+                if (index != -1)
+                    gPreferences.commentaries.splice(index, 1);
             }
             
             updatePreference();

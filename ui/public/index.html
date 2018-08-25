@@ -12,6 +12,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
 
@@ -22,10 +23,14 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsiveMenu" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
         <a class="navbar-brand" href="#"><h5>Vedsangraha</h5></a>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <!--span class="navbar-toggler-icon"></span-->
+          <i class="fas fa-cog"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
@@ -40,6 +45,18 @@
             </li>
             <li class="nav-item commentaries">
                 <a class="nav-link" href="#">Commentaries</a>
+                <ul></ul>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarResponsiveMenu">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item scripts">
+              <a class="nav-link" href="#">Chapter 1</a>
+              <ul></ul>
+            </li>
+            <li class="nav-item commentaries">
+                <a class="nav-link" href="#">Chapter 2</a>
                 <ul></ul>
             </li>
           </ul>

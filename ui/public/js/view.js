@@ -2,7 +2,7 @@ const titleDiv = document.querySelector(".navbar-brand");
 
 function createBookListView(book) {
     return `
-    <div class="card mtb-1">
+    <div class="card mt-2">
       <a href="#${book.code}?code=${book.code}">
         <img class="card-img-top v-card-image" src="${BASEIMAGE_PATH + book.previewUrl}" alt="Card image">
         <div class="card-body p-0">
