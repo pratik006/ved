@@ -30,15 +30,18 @@ public class AutomationRetriever extends TestBaseSetup {
 	@Test
 	public void uploadGita() throws IOException {
 		JsonNode node = mapper.readTree(new File("gita.json"));
-
 		((ObjectNode)node.get("commentaries")).fields().forEachRemaining(n -> {
 			String lang = n.getKey();
-			System.out.println(lang);
 			n.getValue().fields().forEachRemaining(m -> {
 				try {
+					if (m.getKey().startsWith("à¤®à¥\u0082")) {
+						System.out.println("skipping "+m.getKey());
+						return;
+					}
+					System.out.println("Before "+lang+" "+m.getKey());
 					String json = mapper.writeValueAsString(m.getValue());
-					httpPut("https://vedsangraha-187514.firebaseio.com/ved/gita/commentaries/"+lang+"/"+m.getKey()+".json",json);
-					System.out.println(lang+" "+m.getKey());
+					httpPut("https://vedsangraha-187514.firebaseio.com/ved/gita/commentaries/"+lang+"/"+m.getKey().replaceAll(".", "")+".json",json);
+					System.out.println("After "+lang+" "+m.getKey());
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -72,8 +75,8 @@ public class AutomationRetriever extends TestBaseSetup {
 
 			langEntry.getValue().entrySet().forEach(commEntry -> {
 				try {
-					commentariesLang.put(commEntry.getKey(), mapper.writeValueAsString(commEntry.getValue()));
-				} catch (JsonProcessingException e) {
+					commentariesLang.put(commEntry.getKey(), mapper.readTree(mapper.writeValueAsString(commEntry.getValue())));
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			});
@@ -115,8 +118,7 @@ public class AutomationRetriever extends TestBaseSetup {
 	}
 
 	private List<Commentary> readPage(int chapter, int sutra, String lang) throws IOException {
-		String page = readFile(chapter, sutra, "dv");
-		Document doc = Jsoup.parse(page);
+		Document doc = Jsoup.parse(new File(BASE_FOLDER+"gita-"+chapter+"-"+sutra+"-"+lang+".html"), "UTF-8");
 		String headingCss = "font > b";
 		String contentCss = "p:nth-child(3)";
 		List<Commentary> commentaries = new ArrayList<>();
@@ -138,8 +140,11 @@ public class AutomationRetriever extends TestBaseSetup {
 			try {
 				if (elem.selectFirst(headingCss) != null) {
 					heading = elem.selectFirst(headingCss).html();
-				} else {
+				} else if (elem.selectFirst("strong") != null) {
 					heading = elem.selectFirst("strong").html();
+				} else {
+					System.out.println("Null: "+elem);
+					return;
 				}
 			} catch(Exception ex) {
 				System.out.println(chapter+" "+sutra+" "+lang+" "+elem);
@@ -209,6 +214,7 @@ public class AutomationRetriever extends TestBaseSetup {
 			Assert.assertNotNull(commentary.getSutraNo());
 			commentaries.add(commentary);
 		});
+
 		return commentaries;
 	}
 

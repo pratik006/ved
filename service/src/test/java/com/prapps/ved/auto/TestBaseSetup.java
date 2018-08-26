@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TestBaseSetup {
 	protected String BASE_FOLDER = "/media/ext0/iitk-supersite/backup-from-code/gita/";
-	protected String[] languages = new String[] {"as", "bn", "dv", "gu", "pa", "kn", "ml", "or", "ta", "te"};
+	protected String[] languages = new String[] {"as", "bn", "dv", "gu", "pa", "kn", "ml", "or", "ro", "ta", "te"};
 	protected Map<Integer, Integer> chapterSutraMap = new HashMap<>();
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -35,7 +35,7 @@ public class TestBaseSetup {
 		chapterSutraMap.put(18, 78);
 	}
 
-	public String readFile(int chapter, int sutra, String lang) throws IOException {
+	public String  readFile(int chapter, int sutra, String lang) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(BASE_FOLDER+"gita-"+chapter+"-"+sutra+"-"+lang+".html")
 		));

@@ -25,13 +25,13 @@ public class UrlSaverAutomation extends TestBaseSetup {
             int ch = chapter;
             for (int sutra = 1; sutra<= chapterSutraMap.get(chapter); sutra++) {
                 int sutraNo = sutra;
-                Arrays.stream(languages).parallel().forEach(lang -> {
+                //Arrays.stream(languages).parallel().forEach(lang -> {
                     try {
-                        savePage(ch, sutraNo, lang);
+                        savePage(ch, sutraNo, "ro");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                });
+                //});
             }
         }
     }
