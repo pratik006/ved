@@ -1,4 +1,4 @@
-package com.prapps.ved;
+package com.prapps.ved.dto;
 
 public class Book {
 	private String code;

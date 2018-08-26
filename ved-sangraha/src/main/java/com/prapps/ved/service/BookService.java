@@ -1,18 +1,34 @@
-package com.prapps.ved;
+package com.prapps.ved.service;
 
+import com.google.appengine.api.datastore.*;
+import com.prapps.ved.dto.Book;
+import com.prapps.ved.VedException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
 	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	
+
+	public List<Book> getAllBooks() {
+		Query q = new Query(Entities.PROPERTY_METADATA_KIND).setKeysOnly();
+
+		List<Book> books = new ArrayList<>();
+		// Print query results
+		for (Entity e : datastore.prepare(q).asIterable()) {
+			Book book = new Book();
+			book.setCode(e.getKey().getKind());
+			book.setName(e.getKey().getName());
+			books.add(book);
+			//writer.println(e.getKey().getParent().getName() + ": " + e.getKey().getName());
+		}
+
+		return books;
+	}
+
 	public Book findBook(String code) throws VedException {
 		Entity entity = new Entity("book", code);
 		try {
