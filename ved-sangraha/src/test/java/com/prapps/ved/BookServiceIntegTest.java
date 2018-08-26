@@ -27,9 +27,8 @@ public class BookServiceIntegTest {
 
   @Test
   public void testCrudOp() throws Exception {
-    Book book = new Book();
+    Book book = new Book("testing name");
     book.setCode("testing");
-    book.setName("testing name");
     Book savedBook = restTemplate.postForEntity(BASE_APP_URI+"/books", book, Book.class).getBody();
     Assert.assertEquals(book.getCode(), savedBook.getCode());
     Assert.assertEquals(book.getName(), savedBook.getName());

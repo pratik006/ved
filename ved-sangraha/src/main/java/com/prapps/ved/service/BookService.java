@@ -17,13 +17,10 @@ public class BookService {
 		Query q = new Query(Entities.PROPERTY_METADATA_KIND).setKeysOnly();
 
 		List<Book> books = new ArrayList<>();
-		// Print query results
 		for (Entity e : datastore.prepare(q).asIterable()) {
-			Book book = new Book();
+			Book book = new Book(e.getKey().getName());
 			book.setCode(e.getKey().getKind());
-			book.setName(e.getKey().getName());
 			books.add(book);
-			//writer.println(e.getKey().getParent().getName() + ": " + e.getKey().getName());
 		}
 
 		return books;
@@ -38,9 +35,11 @@ public class BookService {
 			throw new VedException(e);
 		}
 		
-		Book book = new Book();
+		Book book = new Book(String.valueOf(entity.getProperty("name")));
 		book.setCode(String.valueOf(entity.getProperty("code")));
-		book.setName(String.valueOf(entity.getProperty("name")));
+		book.setAuthorName(String.valueOf(entity.getProperty("authorName")));
+		book.setPreviewUrl(String.valueOf(entity.getProperty("previewUrl")));
+
 		return book;
 	}
 	
@@ -48,6 +47,8 @@ public class BookService {
 		Entity entity = new Entity("book", book.getCode());
 		entity.setProperty("code", book.getCode());
 		entity.setProperty("name", book.getName());
+		entity.setProperty("authorName", book.getCode());
+		entity.setProperty("previewUrl", book.getName());
 		Key key = datastore.put(entity);
 		return findBook(key.getName());
 	}
@@ -67,10 +68,11 @@ public class BookService {
 			throw new VedException(e);
 		}
 		
-		Book book = new Book();
+		Book book = new Book(String.valueOf(entity.getProperty("name")));
 		book.setCode(String.valueOf(entity.getProperty("code")));
-		book.setName(String.valueOf(entity.getProperty("name")));
-		
+		book.setAuthorName(String.valueOf(entity.getProperty("authorName")));
+		book.setPreviewUrl(String.valueOf(entity.getProperty("previewUrl")));
+
 		datastore.delete(entity.getKey());
 		
 		return book;
