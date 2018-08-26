@@ -127,7 +127,7 @@ public class AutomationRetriever extends TestBaseSetup {
 			ObjectNode s = mapper.createObjectNode();
 			s.put("sutraNo", sutra);
 			s.put("chapterNo", chapter);
-			s.put("content", elem.selectFirst("p[align]").text().trim());
+			s.put("content", elem.select("p[align]").first().text().trim());
 			if (!gita.get("sutras").hasNonNull(lang)) {
 				((ObjectNode)gita.get("sutras")).set(lang, mapper.createArrayNode());
 			}
@@ -138,10 +138,10 @@ public class AutomationRetriever extends TestBaseSetup {
 			String heading = null;
 			String content = null;
 			try {
-				if (elem.selectFirst(headingCss) != null) {
-					heading = elem.selectFirst(headingCss).html();
-				} else if (elem.selectFirst("strong") != null) {
-					heading = elem.selectFirst("strong").html();
+				if (elem.select(headingCss) != null) {
+					heading = elem.select(headingCss).first().html();
+				} else if (elem.select("strong").first() != null) {
+					heading = elem.select("strong").first().html();
 				} else {
 					System.out.println("Null: "+elem);
 					return;
@@ -152,7 +152,7 @@ public class AutomationRetriever extends TestBaseSetup {
 				throw ex;
 			}
 			try {
-				content = elem.selectFirst(contentCss).text();
+				content = elem.select(contentCss).first().text();
 			} catch(Exception ex) {
 				System.out.println(chapter+" "+sutra+" "+lang+" "+elem);
 				ex.printStackTrace();
@@ -182,10 +182,10 @@ public class AutomationRetriever extends TestBaseSetup {
 			String heading = null;
 			String content = null;
 			try {
-				if (elem.selectFirst(headingCss) != null) {
-					heading = elem.selectFirst(headingCss).html();
+				if (elem.select(headingCss).first() != null) {
+					heading = elem.select(headingCss).first().html();
 				} else {
-					heading = elem.selectFirst("strong").html();
+					heading = elem.select("strong").first().html();
 				}
 			} catch(Exception ex) {
 				System.out.println(chapter+" "+sutra+" "+lang+" "+elem);
@@ -193,7 +193,7 @@ public class AutomationRetriever extends TestBaseSetup {
 				throw ex;
 			}
 			try {
-				content = elem.selectFirst(contentCss).text();
+				content = elem.select(contentCss).first().text();
 			} catch(Exception ex) {
 				System.out.println(elem.parent().classNames());
 				System.out.println(chapter+" "+sutra+" "+lang+" "+elem);

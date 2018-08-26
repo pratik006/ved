@@ -7,6 +7,13 @@ public class Commentary {
 	private String commentator;
 	private String language;
 	private String content;
+
+	public static final String CHAPTER_NO = "chapterNo";
+	public static final String SUTRA_NO = "sutraNo";
+	public static final String COMMENTATOR = "commentator";
+	public static final String LANGUAGE = "language";
+	public static final String CONTENT = "content";
+
 	public Long getId() {
 		return id;
 	}

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 
-import javax.servlet.annotation.WebServlet;
+/*import javax.servlet.annotation.WebServlet;*/
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +16,10 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 
-@WebServlet(
+/*@WebServlet(
     name = "HelloAppEngine",
     urlPatterns = {"/test"}
-)
+)*/
 public class HelloAppEngine extends HttpServlet {
 
 	private static final String INDEX_KEY = "indexKey";

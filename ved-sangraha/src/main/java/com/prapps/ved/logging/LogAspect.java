@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Component
-@Aspect
+/*@Component
+@Aspect*/
 public class LogAspect {
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
