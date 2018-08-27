@@ -1,6 +1,9 @@
 package com.prapps.ved.dto;
 
-public class Language {
+import java.util.Arrays;
+import java.util.List;
+
+public class Language implements DatastoreObject {
     private String code;
     private String name;
 
@@ -18,4 +21,9 @@ public class Language {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    @Override
+    public List<String> properties() {
+        return Arrays.asList(CODE, NAME);
+    }
 }

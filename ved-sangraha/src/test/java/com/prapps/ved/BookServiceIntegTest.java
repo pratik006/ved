@@ -1,28 +1,14 @@
 package com.prapps.ved;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.Arrays;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.web.client.RestTemplate;
 
 import com.prapps.ved.dto.Book;
 import com.prapps.ved.dto.Language;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
+import com.prapps.ved.dto.Sutra;
 
 public class BookServiceIntegTest {
   //private static final String BASE_APP_URI = "https://vedsangraha-187514.appspot.com/";
@@ -38,13 +24,23 @@ public class BookServiceIntegTest {
     book.setAvailableLanguages(Arrays.asList(
             new Language("ro", "English"),
             new Language("dv", "Hindi")));
+    Sutra sutra = new Sutra();
+    sutra.setChapterNo(1);
+    sutra.setSutraNo(1);
+    sutra.setContent("testing");
+    Sutra sutra2 = new Sutra();
+    sutra2.setChapterNo(1);
+    sutra2.setSutraNo(1);
+    sutra2.setContent("testing");
+    book.setSutras(Arrays.asList(sutra, sutra2));
 
-    Book savedBook = restTemplate.postForEntity(BASE_APP_URI+"books", book, Book.class).getBody();
+    Book savedBook = restTemplate.postForEntity(BASE_APP_URI + "books", book, Book.class).getBody();
     Assert.assertEquals(book.getCode(), savedBook.getCode());
     Assert.assertEquals(book.getName(), savedBook.getName());
     Assert.assertEquals(book.getAuthorName(), savedBook.getAuthorName());
     Assert.assertEquals(book.getPreviewUrl(), savedBook.getPreviewUrl());
     Assert.assertEquals(book.getAvailableLanguages().size(), savedBook.getAvailableLanguages().size());
+    Assert.assertEquals(book.getSutras().size(), savedBook.getSutras().size());
 
     savedBook = restTemplate.getForEntity(BASE_APP_URI+"books/"+book.getCode(), Book.class).getBody();
     Assert.assertEquals(book.getCode(), savedBook.getCode());
