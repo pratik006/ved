@@ -1,10 +1,12 @@
 package com.prapps.ved.service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -43,20 +45,17 @@ public class DatastoreEntityMapper {
     	T instance;
 		try {
 			instance = clazz.newInstance();
-			entity.getProperties().entrySet().forEach(prop -> {
-	        	String propName = prop.getKey().substring(0, 1).toUpperCase() + prop.getKey().substring(1);
-
-				try {
-					Arrays.stream(clazz.getMethods())
-						.filter(m -> m.getName().equals("set"+propName))
-						.findFirst().get()
-						.invoke(instance, prop.getValue());
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						| SecurityException e) {
-					e.printStackTrace();
+			for (Entry<String, Object> entry : entity.getProperties().entrySet()) {
+				String propName = entry.getKey().substring(0, 1).toUpperCase() + entry.getKey().substring(1);
+				for (Method m : clazz.getMethods()) {
+					if (m.getName().equals("set"+propName)) {
+						m.invoke(instance, entity.getProperty(propName));
+					}
 				}
-			});
-		} catch (InstantiationException | IllegalAccessException e) {
+			}
+	        	
+
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 			throw new VedException();
 		}
