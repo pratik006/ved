@@ -63,4 +63,9 @@ public class Commentary implements DatastoreObject {
 	public List<String> properties() {
 		return Arrays.asList(CHAPTER_NO, SUTRA_NO, LANGUAGE, COMMENTATOR, CONTENT);
 	}
+
+	@Override
+	public String getKind() {
+		return KIND;
+	}
 }

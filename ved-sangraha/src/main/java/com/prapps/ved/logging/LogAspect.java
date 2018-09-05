@@ -21,7 +21,7 @@ public class LogAspect {
     @Autowired ObjectMapper objectMapper;
 
     @Around("execution(public * com.prapps.ved.service.*.*(..))")
-    public Object logAfter(ProceedingJoinPoint joinPoint) {
+    public Object logAfter(ProceedingJoinPoint joinPoint) throws Throwable {
         long started = System.currentTimeMillis();
         Object object = null;
         StringBuilder sb = new StringBuilder();
@@ -49,7 +49,8 @@ public class LogAspect {
             //log(joinPoint, duration, requests, response);
         } catch (Throwable e) {
             LOG.error("Error while audit logging: " + e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
+            throw e;
         }
         return object;
     }

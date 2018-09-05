@@ -3,16 +3,11 @@ package com.prapps.ved.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.appengine.api.datastore.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.Entities;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Query;
 import com.prapps.ved.VedException;
 import com.prapps.ved.dto.Book;
 import com.prapps.ved.dto.Language;
@@ -39,7 +34,7 @@ public class BookService {
 	}
 
 	public Book findBook(String code) throws VedException {
-		Entity entity = new Entity("book", code);
+		Entity entity = new Entity(Book.KIND, code);
 		try {
 			entity = datastore.get(entity.getKey());
 		} catch (EntityNotFoundException e) {
@@ -47,10 +42,10 @@ public class BookService {
 			throw new VedException(e);
 		}
 		
-		Book book = new Book(String.valueOf(entity.getProperty("name")));
-		book.setCode(String.valueOf(entity.getProperty("code")));
-		book.setAuthorName(String.valueOf(entity.getProperty("authorName")));
-		book.setPreviewUrl(String.valueOf(entity.getProperty("previewUrl")));
+		Book book = new Book(String.valueOf(entity.getProperty(Book.NAME)));
+		book.setCode(String.valueOf(entity.getProperty(Book.CODE)));
+		book.setAuthorName(String.valueOf(entity.getProperty(Book.AUTHOR_NAME)));
+		book.setPreviewUrl(String.valueOf(entity.getProperty(Book.PREVIEW_URL)));
 
 		book.setAvailableLanguages(datastoreMapper.fromEntity(entity, Book.AVAILABLE_LANGUAGES, Language.class));	
 		book.setAvailableCommentators((List<String>)entity.getProperty(Book.AVAILABLE_COMMENTATORS));	
@@ -60,15 +55,15 @@ public class BookService {
 	}
 	
 	public Book saveBook(Book book) throws VedException {
-		Entity entity = new Entity("book", book.getCode());
-		entity.setProperty("code", book.getCode());
-		entity.setProperty("name", book.getName());
-		entity.setProperty("authorName", book.getAuthorName());
-		entity.setProperty("previewUrl", book.getPreviewUrl());
+		Entity entity = new Entity(book.getKind(), book.getCode());
+		entity.setProperty(Book.CODE, book.getCode());
+		entity.setProperty(Book.NAME, book.getName());
+		entity.setProperty(Book.AUTHOR_NAME, book.getAuthorName());
+		entity.setProperty(Book.PREVIEW_URL, book.getPreviewUrl());
 
 		entity.setProperty(Book.AVAILABLE_COMMENTATORS, book.getAvailableCommentators());
-		entity.setProperty(Book.AVAILABLE_LANGUAGES, datastoreMapper.toEmbeddedEntity(book.getAvailableLanguages()));
-		entity.setProperty(Book.SUTRAS, datastoreMapper.toEmbeddedEntity(book.getSutras()));
+		entity.setProperty(Book.AVAILABLE_LANGUAGES, datastoreMapper.toEmbeddedEntity(book.getAvailableLanguages(), EmbeddedEntity.class));
+		entity.setProperty(Book.SUTRAS, datastoreMapper.toEmbeddedEntity(book.getSutras(), EmbeddedEntity.class));
 
 		Key key = datastore.put(entity);
 		return findBook(key.getName());
@@ -81,7 +76,7 @@ public class BookService {
 	}
 	
 	public Book delete(String code) throws VedException {
-		Entity entity = new Entity("book", code);
+		Entity entity = new Entity(Book.KIND, code);
 		try {
 			entity = datastore.get(entity.getKey());
 		} catch (EntityNotFoundException e) {
@@ -89,10 +84,10 @@ public class BookService {
 			throw new VedException(e);
 		}
 		
-		Book book = new Book(String.valueOf(entity.getProperty("name")));
-		book.setCode(String.valueOf(entity.getProperty("code")));
-		book.setAuthorName(String.valueOf(entity.getProperty("authorName")));
-		book.setPreviewUrl(String.valueOf(entity.getProperty("previewUrl")));
+		Book book = new Book(String.valueOf(entity.getProperty(Book.NAME)));
+		book.setCode(String.valueOf(entity.getProperty(Book.CODE)));
+		book.setAuthorName(String.valueOf(entity.getProperty(Book.AUTHOR_NAME)));
+		book.setPreviewUrl(String.valueOf(entity.getProperty(Book.PREVIEW_URL)));
 
 		datastore.delete(entity.getKey());
 		

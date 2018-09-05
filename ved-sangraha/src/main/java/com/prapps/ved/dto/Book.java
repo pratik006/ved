@@ -1,11 +1,9 @@
 package com.prapps.ved.dto;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class Book {
+public class Book implements DatastoreObject {
+	public static final String KIND = "BOOK";
 	private Long id;
 	private String code;
 	private String name;
@@ -93,5 +91,15 @@ public class Book {
 
 	public void setSutras(List<Sutra> sutras) {
 		this.sutras = sutras;
+	}
+
+	@Override
+	public List<String> properties() {
+		return Arrays.asList(CODE, NAME, AUTHOR_NAME, PREVIEW_URL);
+	}
+
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

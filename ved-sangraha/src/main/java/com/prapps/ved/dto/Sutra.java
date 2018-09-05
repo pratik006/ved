@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Sutra implements DatastoreObject {
+	public static final String KIND = "SUTRA";
 	private Long id;
 	private Integer chapterNo;
 	private String chapterName;
@@ -68,5 +69,10 @@ public class Sutra implements DatastoreObject {
 	@Override
 	public List<String> properties() {
 		return Arrays.asList(CHAPTER_NO, SUTRA_NO, CONTENT, COMMENTARIES);
+	}
+
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

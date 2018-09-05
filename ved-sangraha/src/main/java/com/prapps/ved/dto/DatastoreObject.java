@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface DatastoreObject {
     List<String> properties();
+    String getKind();
 }
