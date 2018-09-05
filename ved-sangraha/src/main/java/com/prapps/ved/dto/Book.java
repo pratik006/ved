@@ -1,7 +1,9 @@
 package com.prapps.ved.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Book {
 	private Long id;
@@ -11,6 +13,8 @@ public class Book {
 	private String previewUrl;
 	private List<Language> availableLanguages;
 	private List<Commentary> availableCommentaries;
+
+	private Set<Sutra> sutras;
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
@@ -66,5 +70,17 @@ public class Book {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Set<Sutra> getSutras() {
+		if (sutras == null) {
+			sutras = new HashSet<>();
+		}
+
+		return sutras;
+	}
+
+	public void setSutras(Set<Sutra> sutras) {
+		this.sutras = sutras;
 	}
 }

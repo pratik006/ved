@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.prapps.ved.dto.Book;
 import com.prapps.ved.dto.Commentary;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AutomationRetriever extends TestBaseSetup {
 
+	private static final String GITA_FILE = "/media/ext0/iitk-supersite/backup-from-code/gita.json";
 	private Map<String, ArrayNode> sutraMap = new HashMap<>();
 	private ObjectNode gita;
 
@@ -28,8 +30,36 @@ public class AutomationRetriever extends TestBaseSetup {
     }
 
 	@Test
+	public void updateGita() throws IOException {
+		Book gita = new Book();
+		gita.setAuthorName("Shri Krishna");
+		gita.setName("Gita");
+		gita.setCode("gita");
+		gita.setId(1L);
+		List<Commentary> commentaries = new ArrayList<>();
+		JsonNode node = mapper.readTree(new File(GITA_FILE));
+		((ObjectNode)node.get("commentaries")).fields().forEachRemaining(n -> {
+			String lang = n.getKey();
+			n.getValue().fields().forEachRemaining(m -> {
+				ArrayNode array = ((ArrayNode)m.getValue());
+				array.forEach(item -> {
+					Commentary commentary = new Commentary();
+					commentary.setLanguage(lang);
+					commentary.setCommentator(item.get("commentator").asText());
+					commentary.setContent(item.get("content").asText());
+					commentary.setChapterNo(item.get("chapterNo").asInt());
+					commentary.setSutraNo(item.get("sutraNo").asInt());
+					commentaries.add(commentary);
+				});
+			});
+		});
+
+
+	}
+
+	@Test
 	public void uploadGita() throws IOException {
-		JsonNode node = mapper.readTree(new File("gita.json"));
+		JsonNode node = mapper.readTree(new File(GITA_FILE));
 		((ObjectNode)node.get("commentaries")).fields().forEachRemaining(n -> {
 			String lang = n.getKey();
 			n.getValue().fields().forEachRemaining(m -> {
@@ -75,7 +105,7 @@ public class AutomationRetriever extends TestBaseSetup {
 
 			langEntry.getValue().entrySet().forEach(commEntry -> {
 				try {
-					commentariesLang.put(commEntry.getKey(), mapper.readTree(mapper.writeValueAsString(commEntry.getValue())));
+					commentariesLang.set(commEntry.getKey(), mapper.readTree(mapper.writeValueAsString(commEntry.getValue())));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -92,7 +122,7 @@ public class AutomationRetriever extends TestBaseSetup {
 				});
 			}
 		}
-		mapper.writeValue(new File("gita.json"), gita);
+		mapper.writeValue(new File(GITA_FILE), gita);
 	}
 
     @Test
@@ -138,7 +168,7 @@ public class AutomationRetriever extends TestBaseSetup {
 			String heading = null;
 			String content = null;
 			try {
-				if (elem.select(headingCss) != null) {
+				if (elem.select(headingCss) != null && elem.select(headingCss).first() != null) {
 					heading = elem.select(headingCss).first().html();
 				} else if (elem.select("strong").first() != null) {
 					heading = elem.select("strong").first().html();
@@ -161,13 +191,14 @@ public class AutomationRetriever extends TestBaseSetup {
 
 			Commentary commentary = new Commentary();
 			commentary.setLanguage(heading.split(" ")[0].trim());
-			commentary.setCommentator(heading.split(" by|By|BY ")[heading.split(" by|By|BY ").length - 1].trim().replaceAll(".", ""));
+			String[] temps = heading.split(" by|By|BY ");
+			commentary.setCommentator(temps[temps.length - 1].trim().replaceAll("\\.", ""));
 			commentary.setContent(content);
 			commentary.setChapterNo(chapter);
 			commentary.setSutraNo(sutra);
-			Assert.assertNotNull(commentary.getCommentator());
+			Assert.assertTrue(commentary.getCommentator().trim().length() > 0);
 			Assert.assertNotNull(commentary.getLanguage());
-			Assert.assertNotNull(commentary.getContent());
+			Assert.assertTrue(commentary.getContent().trim().length() > 0);
 			Assert.assertNotNull(commentary.getChapterNo());
 			Assert.assertNotNull(commentary.getSutraNo());
 			commentaries.add(commentary);

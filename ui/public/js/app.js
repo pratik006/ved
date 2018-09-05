@@ -1,5 +1,6 @@
 const BASEIMAGE_PATH = "https://vedsangraha-187514.firebaseapp.com/images/";
-const BASEDATA_PATH = "https://vedsangraha-187514.firebaseio.com/ved/"
+const BASEDATA_PATH = "https://vedsangraha-187514.firebaseio.com/ved/";
+const APP_DATA_PATH = "https://vedsangraha-187514.appspot.com/";
 const DEFAULT_SCRIPT = "dv";
 
 const APP_NAME = "Vedsangraha";
