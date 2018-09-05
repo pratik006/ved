@@ -40,8 +40,8 @@ public class CommentaryServiceTest {
     @Test
     public void testSave() {
         Commentary commentary = new Commentary();
-        commentary.setSutraNo(1);
-        commentary.setChapterNo(1);
+        commentary.setSutraNo(1L);
+        commentary.setChapterNo(1L);
         commentary.setContent("test123");
         commentary.setCommentator("abc");
         commentary.setLanguage("dv");

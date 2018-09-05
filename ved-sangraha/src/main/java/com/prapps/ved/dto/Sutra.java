@@ -1,14 +1,15 @@
 package com.prapps.ved.dto;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Sutra implements DatastoreObject {
 	public static final String KIND = "SUTRA";
 	private Long id;
-	private Integer chapterNo;
+	private Long chapterNo;
 	private String chapterName;
-	private Integer sutraNo;
+	private Long sutraNo;
 	private String content;
 
 	public static final String CHAPTER_NO = "chapterNo";
@@ -26,11 +27,11 @@ public class Sutra implements DatastoreObject {
 		this.id = id;
 	}
 
-	public Integer getChapterNo() {
+	public Long getChapterNo() {
 		return chapterNo;
 	}
 
-	public void setChapterNo(Integer chapterNo) {
+	public void setChapterNo(Long chapterNo) {
 		this.chapterNo = chapterNo;
 	}
 
@@ -42,11 +43,11 @@ public class Sutra implements DatastoreObject {
 		this.chapterName = chapterName;
 	}
 
-	public Integer getSutraNo() {
+	public Long getSutraNo() {
 		return sutraNo;
 	}
 
-	public void setSutraNo(Integer sutraNo) {
+	public void setSutraNo(Long sutraNo) {
 		this.sutraNo = sutraNo;
 	}
 
@@ -59,11 +60,26 @@ public class Sutra implements DatastoreObject {
 	}
 
 	public List<Commentary> getCommentaries() {
+		if (commentaries == null) {
+			commentaries = new ArrayList<>();
+		}
+
 		return commentaries;
 	}
 
 	public void setCommentaries(List<Commentary> commentaries) {
 		this.commentaries = commentaries;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Sutra) {
+			Sutra otherSutra = (Sutra) other;
+			return chapterNo == otherSutra.getChapterNo() && sutraNo == otherSutra.getSutraNo() && content.equals(otherSutra.getContent())
+					&& commentaries.equals(otherSutra.getCommentaries());
+		}
+
+		return false;
 	}
 
 	@Override

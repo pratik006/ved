@@ -2,6 +2,7 @@ package com.prapps.ved.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import com.google.appengine.api.datastore.EmbeddedEntity;
 import com.google.appengine.api.datastore.PropertyContainer;
 import com.prapps.ved.exception.VedRuntimeException;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,6 @@ import com.prapps.ved.dto.DatastoreObject;
 @Component
 public class DatastoreEntityMapper {
     public <T extends DatastoreObject, U extends PropertyContainer> U toEmbeddedEntity(final T object, Class<U> clazz) throws VedRuntimeException {
-        //EmbeddedEntity embeddedEntity = new EmbeddedEntity();
 		final U embeddedEntity;
 		try {
 			embeddedEntity = clazz.newInstance();
@@ -35,9 +36,19 @@ public class DatastoreEntityMapper {
                         .filter(field -> field.getName().equals("get"+cap))
                         .findFirst().get()
                         .invoke(object);
-                embeddedEntity.setProperty(prop, val);
+
+				if (val instanceof Collection) {
+					embeddedEntity.setProperty(prop, toEmbeddedEntity((List<DatastoreObject>)val, EmbeddedEntity.class));
+				} else {
+					if (val instanceof DatastoreObject) {
+						val = toEmbeddedEntity((DatastoreObject) val, EmbeddedEntity.class);
+					}
+
+					embeddedEntity.setProperty(prop, val);
+				}
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
                 e.printStackTrace();
+				throw new VedRuntimeException("Error in mapping props: "+e.getMessage(), e.getCause());
             }
         });
 
@@ -53,16 +64,27 @@ public class DatastoreEntityMapper {
 		try {
 			instance = clazz.newInstance();
 			for (Entry<String, Object> entry : entity.getProperties().entrySet()) {
+				if (!entity.hasProperty(entry.getKey())) {
+					continue;
+				}
+
 				String propName = entry.getKey().substring(0, 1).toUpperCase() + entry.getKey().substring(1);
+				Object value = entity.getProperty(entry.getKey());
+
 				for (Method m : clazz.getMethods()) {
 					if (m.getName().equals("set"+propName)) {
-						m.invoke(instance, entity.getProperty(propName));
+						if (value instanceof Collection) {
+							ParameterizedType parameterizedType = (ParameterizedType) m.getGenericParameterTypes()[0];
+							Class<T> targetClass = (Class<T>) Class.forName(parameterizedType.getActualTypeArguments()[0].getTypeName());
+							value = fromEntity((List<EmbeddedEntity>)value, targetClass);
+						}
+						m.invoke(instance, value);
 					}
 				}
 			}
 	        	
 
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new VedException();
 		}

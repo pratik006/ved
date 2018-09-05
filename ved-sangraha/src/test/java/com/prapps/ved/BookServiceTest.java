@@ -3,6 +3,7 @@ package com.prapps.ved;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.prapps.ved.dto.Book;
+import com.prapps.ved.dto.Commentary;
 import com.prapps.ved.dto.Language;
 import com.prapps.ved.dto.Sutra;
 import com.prapps.ved.service.BookService;
@@ -79,6 +80,7 @@ public class BookServiceTest {
         expected.getAvailableLanguages().stream().forEach(c1 -> actual.getAvailableLanguages().stream().filter(c2->c2.getCode().equals(c1.getCode()) && c2.getName().equals(c2.getName())));
 
         Assert.assertEquals(expected.getSutras().size(), actual.getSutras().size());
+        Assert.assertTrue(expected.getSutras().equals(actual.getSutras()));
     }
 
     private Book createDummyBook() {
@@ -91,13 +93,30 @@ public class BookServiceTest {
                 new Language("dv", "Hindi")));
         book.setAvailableCommentators(Arrays.asList("aaa", "bbb"));
         Sutra sutra = new Sutra();
-        sutra.setChapterNo(1);
-        sutra.setSutraNo(1);
+        sutra.setChapterNo(1L);
+        sutra.setSutraNo(1L);
         sutra.setContent("testing");
         Sutra sutra2 = new Sutra();
-        sutra2.setChapterNo(1);
-        sutra2.setSutraNo(1);
+        sutra2.setChapterNo(1L);
+        sutra2.setSutraNo(2L);
         sutra2.setContent("testing");
+
+        Commentary commentary = new Commentary();
+        commentary.setSutraNo(1L);
+        commentary.setChapterNo(1L);
+        commentary.setContent("test commentary");
+        commentary.setLanguage("dv");
+        commentary.setCommentator("test commentator");
+        sutra.getCommentaries().add(commentary);
+
+        commentary = new Commentary();
+        commentary.setSutraNo(2L);
+        commentary.setChapterNo(1L);
+        commentary.setContent("test commentary2");
+        commentary.setLanguage("dv");
+        commentary.setCommentator("test commentator");
+        sutra.getCommentaries().add(commentary);
+
         book.setSutras(Arrays.asList(sutra, sutra2));
         return book;
     }

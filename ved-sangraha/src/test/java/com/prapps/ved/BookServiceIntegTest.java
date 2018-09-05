@@ -26,12 +26,12 @@ public class BookServiceIntegTest {
             new Language("dv", "Hindi")));
     book.setAvailableCommentators(Arrays.asList("aaa", "bbb"));
     Sutra sutra = new Sutra();
-    sutra.setChapterNo(1);
-    sutra.setSutraNo(1);
+    sutra.setChapterNo(1L);
+    sutra.setSutraNo(1L);
     sutra.setContent("testing");
     Sutra sutra2 = new Sutra();
-    sutra2.setChapterNo(1);
-    sutra2.setSutraNo(1);
+    sutra2.setChapterNo(1L);
+    sutra2.setSutraNo(1L);
     sutra2.setContent("testing");
     book.setSutras(Arrays.asList(sutra, sutra2));
 

@@ -47,8 +47,8 @@ public class AutomationRetriever extends TestBaseSetup {
 					commentary.setLanguage(lang);
 					commentary.setCommentator(item.get("commentator").asText());
 					commentary.setContent(item.get("content").asText());
-					commentary.setChapterNo(item.get("chapterNo").asInt());
-					commentary.setSutraNo(item.get("sutraNo").asInt());
+					commentary.setChapterNo(item.get("chapterNo").asLong());
+					commentary.setSutraNo(item.get("sutraNo").asLong());
 					commentaries.add(commentary);
 				});
 			});
@@ -147,7 +147,7 @@ public class AutomationRetriever extends TestBaseSetup {
 
 	}
 
-	private List<Commentary> readPage(int chapter, int sutra, String lang) throws IOException {
+	private List<Commentary> readPage(Long chapter, Long sutra, String lang) throws IOException {
 		Document doc = Jsoup.parse(new File(BASE_FOLDER+"gita-"+chapter+"-"+sutra+"-"+lang+".html"), "UTF-8");
 		String headingCss = "font > b";
 		String contentCss = "p:nth-child(3)";
@@ -253,9 +253,9 @@ public class AutomationRetriever extends TestBaseSetup {
 		Map<String, Map<String, List<Commentary>>> commentaryLangMap = new ConcurrentHashMap();
 
 		for (int chapter=1;chapter<=18;chapter++) {
-			int ch = chapter;
+			long ch = chapter;
 			for (int sutra = 1; sutra<= chapterSutraMap.get(chapter); sutra++) {
-				int sutraNo = sutra;
+				long sutraNo = sutra;
 				Arrays.stream(languages).forEach(lang -> {
 					if (!commentaryLangMap.containsKey(lang)) {
 						commentaryLangMap.put(lang, new ConcurrentHashMap<>());

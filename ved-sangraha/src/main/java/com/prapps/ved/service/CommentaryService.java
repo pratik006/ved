@@ -38,8 +38,8 @@ public class CommentaryService {
             commentary.setLanguage(String.valueOf(comm.getProperty(Commentary.LANGUAGE)));
             commentary.setCommentator(String.valueOf(comm.getProperty(Commentary.COMMENTATOR)));
             commentary.setContent(String.valueOf(comm.getProperty(Commentary.CONTENT)));
-            commentary.setChapterNo( ((Long)comm.getProperty(Commentary.CHAPTER_NO)).intValue() );
-            commentary.setSutraNo( ((Long)comm.getProperty(Commentary.SUTRA_NO)).intValue() );
+            commentary.setChapterNo( (Long)comm.getProperty(Commentary.CHAPTER_NO) );
+            commentary.setSutraNo( (Long)comm.getProperty(Commentary.SUTRA_NO) );
             return commentary;
         }).collect(Collectors.toList());
     }

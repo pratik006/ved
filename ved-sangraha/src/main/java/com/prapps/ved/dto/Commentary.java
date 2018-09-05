@@ -2,11 +2,12 @@ package com.prapps.ved.dto;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Commentary implements DatastoreObject {
 	private Long id;
-	private int chapterNo;
-	private int sutraNo;
+	private Long chapterNo;
+	private Long sutraNo;
 	private String commentator;
 	private String language;
 	private String content;
@@ -43,19 +44,19 @@ public class Commentary implements DatastoreObject {
 		this.content = content;
 	}
 
-	public int getChapterNo() {
+	public Long getChapterNo() {
 		return chapterNo;
 	}
 
-	public void setChapterNo(int chapterNo) {
+	public void setChapterNo(Long chapterNo) {
 		this.chapterNo = chapterNo;
 	}
 
-	public int getSutraNo() {
+	public Long getSutraNo() {
 		return sutraNo;
 	}
 
-	public void setSutraNo(int sutraNo) {
+	public void setSutraNo(Long sutraNo) {
 		this.sutraNo = sutraNo;
 	}
 	
@@ -67,5 +68,17 @@ public class Commentary implements DatastoreObject {
 	@Override
 	public String getKind() {
 		return KIND;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Commentary) {
+			Commentary otherObj = (Commentary) obj;
+			return this.getChapterNo() == otherObj.getChapterNo()
+					&& this.getSutraNo() == otherObj.getSutraNo()
+					&& this.getContent().equals(otherObj.getContent());
+		}
+
+		return false;
 	}
 }
