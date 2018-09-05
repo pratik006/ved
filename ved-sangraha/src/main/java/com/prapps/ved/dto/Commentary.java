@@ -1,6 +1,9 @@
 package com.prapps.ved.dto;
 
-public class Commentary {
+import java.util.Arrays;
+import java.util.List;
+
+public class Commentary implements DatastoreObject {
 	private Long id;
 	private int chapterNo;
 	private int sutraNo;
@@ -54,5 +57,10 @@ public class Commentary {
 
 	public void setSutraNo(int sutraNo) {
 		this.sutraNo = sutraNo;
+	}
+	
+	@Override
+	public List<String> properties() {
+		return Arrays.asList(CHAPTER_NO, SUTRA_NO, LANGUAGE, COMMENTATOR, CONTENT);
 	}
 }

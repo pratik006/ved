@@ -12,16 +12,17 @@ public class Book {
 	private String authorName;
 	private String previewUrl;
 	private List<Language> availableLanguages;
-	private List<Commentary> availableCommentaries;
-
-	private Set<Sutra> sutras;
+	private List<String> availableCommentators;
+	private List<Sutra> sutras;
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
 	public static final String AUTHOR_NAME = "authorName";
 	public static final String PREVIEW_URL = "previewUrl";
-	public static final String LANGUAGES = "availableLanguages";
-	public static final String COMMENTARIES = "availableCommentaries";
+	public static final String AVAILABLE_LANGUAGES = "availableLanguages";
+	public static final String AVAILABLE_COMMENTATORS = "availableCommentators";
+	public static final String SUTRAS = "sutras";
+
 
 	public Book() { }
 
@@ -58,11 +59,21 @@ public class Book {
 	public List<Chapter> getChapters() { if (chapters == null) { chapters = new ArrayList<>(); } return chapters; }
 	public void setChapters(List<Chapter> chapters) { this.chapters = chapters; }
 
-	public List<Language> getAvailableLanguages() { return availableLanguages; }
+	public List<Language> getAvailableLanguages() {
+		if (availableLanguages == null) {
+			availableLanguages = new ArrayList<>();
+		}
+		return availableLanguages;
+	}
 	public void setAvailableLanguages(List<Language> availableLanguages) { this.availableLanguages = availableLanguages; }
 
-	public List<Commentary> getAvailableCommentaries() { return availableCommentaries; }
-	public void setAvailableCommentaries(List<Commentary> commentaries) { this.availableCommentaries = commentaries; }
+	public List<String> getAvailableCommentators() {
+		if (availableCommentators == null) {
+			availableCommentators = new ArrayList<>();
+		}
+		return availableCommentators;
+	}
+	public void setAvailableCommentators(List<String> commentators) { this.availableCommentators = commentators; }
 
 	public String getCode() {
 		return code;
@@ -72,15 +83,15 @@ public class Book {
 		this.code = code;
 	}
 
-	public Set<Sutra> getSutras() {
+	public List<Sutra> getSutras() {
 		if (sutras == null) {
-			sutras = new HashSet<>();
+			sutras = new ArrayList<>();
 		}
 
 		return sutras;
 	}
 
-	public void setSutras(Set<Sutra> sutras) {
+	public void setSutras(List<Sutra> sutras) {
 		this.sutras = sutras;
 	}
 }
