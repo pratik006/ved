@@ -73,20 +73,21 @@ function createBookNavMenu(book) {
     }, "");
 }
 
-function createCommentariesAccordions(commentator, commentary) {
+function createCommentariesAccordions(commentator, commentary, isFirst) {
+    const key = commentator.replace(/ /g, '');
     return `
       <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="heading${key}">
             <h5 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#${key}" aria-expanded="false" aria-controls="${key}">
             ${commentator}
             </button>
             </h5>
         </div>
     
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="${key}" class="collapse ${isFirst?'show':''}" aria-labelledby="heading${key}" data-parent="#accordionExample">
             <div class="card-body">
-             ${commentary.content}
+             ${commentary}
             </div>
         </div>
       </div>`;

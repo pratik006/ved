@@ -145,9 +145,11 @@ async function loadSutra(bookCode, chapterNo, sutraNo=1) {
         });
     });
     //viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
+    var isFirst = true;
     gPreferences.commentaries.forEach(comm => {        
         getCommentary(comm, chapterNo, sutraNo).then(commentary => {
-            commPanel.innerHTML += createCommentariesAccordions(comm, commentary);
+            commPanel.innerHTML += createCommentariesAccordions(comm, commentary, isFirst);
+            isFirst = false;
         });
     });
     
@@ -183,7 +185,7 @@ async function getBookByCode(bookCode) {
 }
 
 async function getSutrasByLanguage(language) {
-    const key = gBookCode+"-sutras-"+language;
+    const key = gBookCode+"/sutras/"+language;
     let sutras = JSON.parse(localStorage.getItem(key));
 
     if (!sutras) {
@@ -194,21 +196,22 @@ async function getSutrasByLanguage(language) {
     return sutras;
 }
 
-async function getCommentaries(commentator) {
-    const key = gBookCode+"-commentary-"+commentator.replace(" ", "").toLowerCase()+"-english";
+async function getCommentaries(commentator, language) {
+    const key = gBookCode+"/commentaries/"+commentator.replace(/ /g, '')+"/"+language;
     let commentaries = JSON.parse(localStorage.getItem(key));
 
     if (!commentaries) {
         commentaries = await fetch(BASEDATA_PATH + key + ".json").then(resp => resp.json());
-        localStorage.setItem(key, JSON.stringify(commentaries));
+        if(commentaries) 
+            localStorage.setItem(key, JSON.stringify(commentaries));
     }
 
     return commentaries;
 }
 
 async function getCommentary(commentator, chapterNo, sutraNo) {
-    const commentaries = await getCommentaries(commentator);
-    return commentaries.find(c => c.chapter == chapterNo && c.sutra == sutraNo);
+    const commentaries = await getCommentaries(commentator, gPreferences.languages[0]);
+    return commentaries[chapterNo][sutraNo];
 }
 
 function updatePreference() {
