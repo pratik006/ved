@@ -16,10 +16,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AutomationRetriever extends TestBaseSetup {
 
 	private static final String GITA_FILE = "/media/ext0/iitk-supersite/backup-from-code/gita.json";
+	private static final String BASE_FIREBASE_URI = "https://vedsangraha-187514.firebaseio.com/ved/";
 	private Map<String, ArrayNode> sutraMap = new HashMap<>();
 	private ObjectNode gita;
 
@@ -63,20 +65,27 @@ public class AutomationRetriever extends TestBaseSetup {
 		((ObjectNode)node.get("commentaries")).fields().forEachRemaining(n -> {
 			String lang = n.getKey();
 			n.getValue().fields().forEachRemaining(m -> {
-				try {
-					if (m.getKey().startsWith("à¤®à¥\u0082")) {
-						System.out.println("skipping "+m.getKey());
-						return;
-					}
-					System.out.println("Before "+lang+" "+m.getKey());
-					String json = mapper.writeValueAsString(m.getValue());
-					httpPut("https://vedsangraha-187514.firebaseio.com/ved/gita/commentaries/"+lang+"/"+m.getKey().replaceAll(".", "")+".json",json);
-					System.out.println("After "+lang+" "+m.getKey());
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (m.getKey().startsWith("à¤®à¥\u0082") || m.getKey().equalsIgnoreCase("मूलस्लोकः")) {
+					System.out.println("skipping "+m.getKey());
+					return;
 				}
+
+				ArrayNode sutras = (ArrayNode)m.getValue();
+				sutras.forEach(sutra -> {
+					ObjectNode s = (ObjectNode) sutra;
+					int chapterNo = sutra.get("chapterNo").asInt();
+					int sutraNo = sutra.get("sutraNo").asInt();
+					String url = BASE_FIREBASE_URI+"gita/commentaries/"+m.getKey().replaceAll("\\.", "")+"/"+lang+"/"+ chapterNo +"/"+ sutraNo +".json";
+					try {
+						String json = mapper.writeValueAsString(sutra.get("content"));
+						httpPut(url,json);
+						System.out.println("Uri "+url);
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
 			});
 		});
 
