@@ -36,3 +36,16 @@
     box-shadow: 2px 2px;
     padding: 10px;
 }
+
+/* Icon when the collapsible content is shown */
+.nav-link:after {
+    font-family: FontAwesome;
+    content: "--";
+    float: right;
+    margin-left: 15px;
+    position:absolute;
+  }
+  /* Icon when the collapsible content is hidden */
+  .nav-link.collapsed:after {
+    content: ">";
+  }

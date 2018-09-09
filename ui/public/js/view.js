@@ -28,7 +28,7 @@ function createSutraView(sutra) {
     return `
     <div class="card mt-4 v-sutra">
         <div class="card-body p-0">
-            <h5 class="card-title ml-2">${sutra.content}</h5>
+            <h5 class="card-title ml-2">${sutra}</h5>
         </div>
     </div>`;
 }

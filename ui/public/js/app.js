@@ -38,8 +38,10 @@ var gPreferences = new Object();
 
     nextBtn.addEventListener('click', evt => nextSutra());
     prevBtn.addEventListener('click', evt => prevSutra());
-    homeBtn.addEventListener('click', evt => {});    
-    document.querySelector("body").addEventListener('click', evt => {
+    homeBtn.addEventListener('click', evt => {
+        window.location.href = "#";
+    });    
+    document.querySelector("#script-list").addEventListener('click', evt => {
         if (navbarMenu.classList.contains("show")) {
             btnMenu.click();
         }
@@ -141,19 +143,21 @@ async function loadSutra(bookCode, chapterNo, sutraNo=1) {
     const commPanel = viewport.querySelector('.commentariesPanel > .accordion');
     gPreferences.languages.forEach(lang => {
         getSutrasByLanguage(lang).then(sutras => {
-            sutrasPanel.innerHTML += createSutraView(sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));    
+            sutrasPanel.innerHTML += createSutraView(sutras[chapterNo][sutraNo]);    
         });
     });
     //viewport.innerHTML = createSutraView(book.sutras.find(s => s.chapterNo == chapterNo && s.sutraNo == sutraNo));
     var isFirst = true;
     gPreferences.commentaries.forEach(comm => {        
         getCommentary(comm, chapterNo, sutraNo).then(commentary => {
-            commPanel.innerHTML += createCommentariesAccordions(comm, commentary, isFirst);
-            isFirst = false;
+            if (commentary) {
+                commPanel.innerHTML += createCommentariesAccordions(comm, commentary, isFirst);
+                isFirst = false;
+            }
         });
     });
     
-    setTitle( getChapterName(gBook, gChapterNo)+" | Verse "+gSutraNo) ;
+    setTitle( getChapterName(gBook, gChapterNo)+" | "+gSutraNo) ;
 }
 
 function prevSutra() {
@@ -210,8 +214,8 @@ async function getCommentaries(commentator, language) {
 }
 
 async function getCommentary(commentator, chapterNo, sutraNo) {
-    const commentaries = await getCommentaries(commentator, gPreferences.languages[0]);
-    return commentaries[chapterNo][sutraNo];
+    const commentaries = await getCommentaries(commentator, "dv");
+    return commentaries ? commentaries[chapterNo][sutraNo] : null;
 }
 
 function updatePreference() {
