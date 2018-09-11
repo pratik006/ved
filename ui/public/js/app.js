@@ -18,6 +18,7 @@ const navbarMenu = document.querySelector("#navbarResponsiveMenu");
 const navbarSettingsMenu = document.querySelector("#navbarResponsiveSettings");
 
 var gBook;
+var gSutras = [];
 var gBookCode;
 var gChapterNo;
 var gSutraNo;
@@ -61,7 +62,7 @@ async function handleUrl(url) {
     let urlParams = new URLSearchParams(window.location.hash.split("?")[1]);
     gBookCode = urlParams.get("code");
     gChapterNo = urlParams.get("ch");
-    gSutraNo = urlParams.get("sutra");
+    gSutraNo = urlParams.has("sutra") ? parseInt(urlParams.get("sutra")) : undefined;
     gBook = await getBookByCode(gBookCode);
     btnMenu.style.display = gBook ? "block" : "none";
     navbarMenu.querySelector("ul").innerHTML = createBookNavMenu(gBook);
@@ -72,7 +73,6 @@ async function handleUrl(url) {
         return;
     }
 
-    gSutraNo = gSutraNo ? parseInt(gSutraNo) : 1;
     loadSutra(gBookCode, gChapterNo, gSutraNo);
 }
 
@@ -200,6 +200,7 @@ async function getSutrasByLanguage(language) {
         localStorage.setItem(key, JSON.stringify(sutras));
     }
 
+    gSutras[language] = sutras;
     return sutras;
 }
 

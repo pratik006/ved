@@ -135,7 +135,7 @@ function handleTouchMove(evt) {
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
         if ( xDiff > 0 ) {
             /* left swipe */ 
-            if (gBook.sutras.filter(s => s.chapterNo == gChapterNo).length > gSutraNo) {
+            if (gSutras[gPreferences.languages[0]].length > gSutraNo) {
                 window.location.href=`#${gBookCode}?code=${gBookCode}&ch=${gChapterNo}&sutra=${gSutraNo+1}`;
             }
         } else {
