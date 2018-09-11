@@ -1,4 +1,5 @@
 const titleDiv = document.querySelector(".navbar-brand");
+const MAX_CHAPTER_LEN_LIMIT = 14;
 
 function createBookListView(book) {
     return `
@@ -94,6 +95,18 @@ function createCommentariesAccordions(commentator, commentary, isFirst) {
 }
 
 function setTitle(title) {
+    if (title.length > MAX_CHAPTER_LEN_LIMIT) {
+        var chapter = title.split("|")[0];
+        const sutraNo = title.split("|")[1];
+        if (sutraNo) {
+            chapter = chapter.substring(0, MAX_CHAPTER_LEN_LIMIT) + "..";
+            title = chapter + " | " + sutraNo;
+        } else {
+            if (chapter.length > MAX_CHAPTER_LEN_LIMIT+5)
+                chapter = chapter.substring(0, MAX_CHAPTER_LEN_LIMIT+5) + "..";
+            title = chapter;
+        }
+    }
     titleDiv.innerHTML = title;
 }
 

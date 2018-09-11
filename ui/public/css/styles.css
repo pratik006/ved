@@ -40,7 +40,7 @@
 /* Icon when the collapsible content is shown */
 .nav-link:after {
     font-family: FontAwesome;
-    content: "--";
+    content: "";
     float: right;
     margin-left: 15px;
     position:absolute;

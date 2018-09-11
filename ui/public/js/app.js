@@ -54,7 +54,6 @@ var gPreferences = new Object();
 async function handleUrl(url) {
     if (window.location.hash.split("?").length < 2) {
         loadHomePage();
-        nextBtn.querySelector("a").removeAttribute("href");
         btnMenu.style.display = "none";
         return;
     }
@@ -78,6 +77,10 @@ async function handleUrl(url) {
 }
 
 async function handleTopMenu() {
+    if (navbarMenu.classList.contains("show")) {
+        //collapse the menu by default on page load
+        btnMenu.click();
+    }
     scriptsDiv.innerHTML = createScriptsView(gBook.availableLanguages);    
     scriptsDiv.addEventListener('change', evt => {
         if (evt.target.type == "checkbox") {
