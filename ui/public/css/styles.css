@@ -1,0 +1,38 @@
+.v-card-image {
+    height: 200px;
+    max-height: 200px;
+}
+
+.v-footer {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 1.5;
+    color: white;
+}
+  
+.v-footer a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    height: 6vh;
+}
+
+.v-chapter-summary {
+    font-size: 24px;
+    box-shadow: 2px 2px;
+}
+
+.v-chapter-summary div {
+    color: black;
+}
+
+.v-sutra {
+    box-shadow: 2px 2px;
+    padding: 10px;
+}

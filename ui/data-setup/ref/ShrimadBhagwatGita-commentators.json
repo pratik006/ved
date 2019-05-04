@@ -1,0 +1,92 @@
+[
+    {
+      "id": 1,
+      "commentator": "Swami Sivananda",
+      "language": "english"
+    },
+    {
+      "id": 2,
+      "commentator": "Sri Neelkanth",
+      "language": "sanskrit"
+    },
+    {
+      "id": 3,
+      "commentator": "Sri Jayatritha",
+      "language": "sanskrit"
+    },
+    {
+      "id": 4,
+      "commentator": "Sri Sridhara Swami",
+      "language": "sanskrit"
+    },
+    {
+      "id": 5,
+      "commentator": "Sri Madhusudan Saraswati",
+      "language": "sanskrit"
+    },
+    {
+      "id": 6,
+      "commentator": "Sri Vallabhacharya",
+      "language": "sanskrit"
+    },
+    {
+      "id": 7,
+      "commentator": "Sri Vedantadeshikacharya Venkatanatha",
+      "language": "sanskrit"
+    },
+    {
+      "id": 8,
+      "commentator": "Swami Tejomayananda",
+      "language": "hindi"
+    },
+    {
+      "id": 9,
+      "commentator": "Sri Abhinavgupta",
+      "language": "sanskrit"
+    },
+    {
+      "id": 10,
+      "commentator": "Sri Ramanuja",
+      "language": "sanskrit"
+    },
+    {
+      "id": 11,
+      "commentator": "Sri Harikrishnadas Goenka",
+      "language": "hindi"
+    },
+    {
+      "id": 12,
+      "commentator": "Sri Madhavacharya",
+      "language": "sanskrit"
+    },
+    {
+      "id": 13,
+      "commentator": "Sri Dhanpati",
+      "language": "sanskrit"
+    },
+    {
+      "id": 14,
+      "commentator": "Swami Ramsukhdas",
+      "language": "hindi"
+    },
+    {
+      "id": 15,
+      "commentator": "Sri Anandgiri",
+      "language": "sanskrit"
+    },
+    {
+      "id": 16,
+      "commentator": "Sri Shankaracharya",
+      "language": "sanskrit"
+    },
+    {
+      "id": 17,
+      "commentator": "Swami Chinmayananda",
+      "language": "hindi"
+    },
+    {
+      "id": 18,
+      "commentator": "Sri Purushottamji",
+      "language": "sanskrit"
+    }
+  ]

@@ -1,0 +1,59 @@
+{
+  "id" : 1,
+  "name" : "Shrimad Bhagwat Gita",
+  "code" : "gita",
+  "authorName" : "Shri Krishna",
+  "previewUrl" : "https://vedsangraha-187514.firebaseapp.com/images/gita.jpg",
+  "chapterSummaries": [
+    {"chapterNo":1,"code":"gita","content":"In this chapter, the stage is set for the conversation between Lord Krishna & Arjuna in the battlefield of Kurukshetra in about c. 3102 B.C.","headline":"LAMENTING THE CONSEQUENCE OF WAR","name":"ARJUN-VISHAD"},{"chapterNo":2,"code":"gita","content":"In this chapter, Arjuna accepts the position of a disciple of Lord Krishna and requests him to instruct on how to dispel his grief.\nThis chapter also summarizes the contents of the Gita.","headline":"THE ETERNAL REALITY OF THE SOULS' IMMORTALITY","name":"SANKHYA-YOG"},{"chapterNo":3,"content":"In this chapter, Lord Krishna delivers a stern talk to Arjuna about the duties every member of the society needs to carry out.","headline":"THE ETERNAL DUTIES OF HUMAN BEINGS","name":"KARMA-YOG"},{"chapterNo":4,"content":"In this chapter, Lord Krishna reveals how spiritual knowledge can be received and the paths of action and wisdom to be taken.","headline":"APPROACHING THE SUPREME TRUTH","name":"JNANA-YOG"},{"chapterNo":5,"content":"In this chapter, Lord Krishna explains the concepts of action with detachment and renunciation in actions and how both are a means to the same goal of salvation.","headline":"ACTION AND RENUNCIATION","name":"KARMASANYASAYOG"},{"chapterNo":6,"content":"In this chapter, Lord Krishna talks about 'astanga yoga,' and how to practice it so one may gain mastery of the mind reveal their spiritual nature.","headline":"THE SCIENCE OF SELF-REALIZATION","name":"ATMASANYAMAYOG"},{"chapterNo":7,"content":"In this chapter, Lord Krishna tells us about the absolute reality, why it is difficult to overcome Maya and the four types of people that are attracted to and opposed to divinity.","headline":"KNOWLEDGE OF THE SUPREME TRUTH","name":"VIJNANAYOG"},{"chapterNo":8,"content":"In this chapter, Lord Krishna explains the various ways of renouncing the material world, the destination to which each leads to and the rewards they receive.","headline":"ATTAINMENT OF SALVATION","name":"AKSHARAPARABRAHMAYOG"},{"chapterNo":9,"content":"In this Chapter, Lord Krishna talks us how the our material existence is created, prevaded, maintained and destroyed by divine powers, the sovereign science and secret.","headline":"CONFIDENTIAL KNOWLEDGE OF THE SUPREME TRUTH","name":"RAJAVIDYARAJAGUHYAYOG"},{"chapterNo":10,"content":"In this Chapter, Lord Krishna reveals his manifestations as Arjuna prays to him to describe more of his 'opulences' and Krishna explains the most prominent ones.","headline":"THE INFINITE GLORIES OF THE SUPREME TRUTH","name":"VIBHUTI YOG"},{"chapterNo":11,"content":"In this Chapter, Lord Krishna grants Arjuna's wish and reveal His universal form - thus showing him His entire existence.","headline":"THE VISION OF THE UNIVERSAL FORM","name":"VISWARUPDARSANAM"},{"chapterNo":12,"content":"In this Chapter, Lord Krishna extols the glory of true devotion to God and explains the different forms of spiritual disciplines.","headline":"THE PATH OF DEVOTION","name":"BHAKITYOG"},{"chapterNo":13,"content":"In this Chapter, Lord Krishna shows us the difference between the physical body and the immortal soul - the transitory and the perishable vis-a-vis the immutable and the eternal.","headline":"THE INDIVIDUAL AND ULTIMATE CONSCIOUSNESS","name":"KSHETRAKSHETRAJNAVIBHAGAYOGO"},{"chapterNo":14,"content":"In this Chapter, Lord Krishna advises Arjuna to relinquish ignorance and passion and how everyone can adopt the path of pure goodness until they acquire the ability to transcend them.","headline":"HE THREE QUALITIES OF MATERIAL NATURE","name":"GUNATRAYAVIBHAGAYOG"},{"chapterNo":15,"content":"In this Chapter, Lord Krishna reveals the transcendental characteristics of the omnipotent, omniscient and omnipresent and explains the purpose and value of knowing and realizing God.","headline":"REALIZATION OF THE SUPREME TRUTH","name":"PURUSHOTTAMAPRAPTIYOGO"},{"chapterNo":16,"content":"In this Chapter, Lord Krishna explains in detail the divine properties, conduct and actions which are righteous in nature and conducive to divinity while delineating the evil and ill conducts.","headline":"THE DIVINE AND THE EVIL NATURES DEFINED","name":"DAIVASARASAUPADWIBHAGAYOG"},{"chapterNo":17,"content":"In this Chapter, Lord Krishna tells us about the three divisions of faith and how these different qualities  determine that character of human beings and their consciousness in this world.","headline":"THE THREE TYPES OF MATERIAL EXISTENCE","name":"SRADDHATRAYAVIBHAGAYOG"}
+  ],
+  "availableLanguages" : [ {
+    "code" : "as",
+    "name" : "Assamese"
+  }, {
+    "code" : "bn",
+    "name" : "Bengali"
+  }, {
+    "code" : "dv",
+    "name" : "Devnagari"
+  }, {
+    "code" : "gu",
+    "name" : "Gujrati"
+  }, {
+    "code" : "kn",
+    "name" : "Kannada"
+  }, {
+    "code" : "ml",
+    "name" : "Malayalam"
+  }, {
+    "code" : "or",
+    "name" : "Oriya"
+  }, {
+    "code" : "pa",
+    "name" : "Gurmukhi"
+  }, {
+    "code" : "ro",
+    "name" : "Roman"
+  }, {
+    "code" : "ta",
+    "name" : "Tamil"
+  }, {
+    "code" : "te",
+    "name" : "Telgu"
+  } ],
+  "availableCommentaries" : ["Swami Sivananda", "Sri Neelkanth","Sri Jayatritha", "Sri Sridhara Swami", "Sri Madhusudan Saraswati",
+    "Sri Vallabhacharya",
+    "Sri Vedantadeshikacharya Venkatanatha",
+    "Swami Tejomayananda",
+    "Sri Abhinavgupta",
+    "Sri Ramanuja",
+    "Sri Harikrishnadas Goenka",
+    "Sri Madhavacharya",
+    "Sri Dhanpati",
+    "Swami Ramsukhdas",
+    "Sri Anandgiri",
+    "Sri Shankaracharya",
+    "Swami Chinmayananda",
+    "Sri Purushottamji"
+  ]
+}
